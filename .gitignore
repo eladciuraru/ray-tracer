@@ -1,0 +1,10 @@
+# Directories
+.vscode
+build
+temp
+
+# File types
+*.exe
+
+# Reinclude specific items
+!vswhere.exe
