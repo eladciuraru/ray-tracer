@@ -1,9 +1,2 @@
-#include <stdio.h>
-
-
-int main(void)
-{
-    printf("Test build script\n");
-
-    return 0;
-}
+#include "renderer\renderer.h"
+#include "renderer\renderer_vector.c"

@@ -4,26 +4,29 @@
 set "ParentDir=%~dp0"
 set "BuildDir=%ParentDir%\build"
 set "SourceDir=%ParentDir%\src"
+set "TestsDir=%ParentDir%\tests"
 
-set "CCFlags=/TC /Wall /WX /nologo /I^"%SourceDir%^" /wd4668 /wd4710"
+set "WarningsFlags=/W4 /WX /wd4204 /wd4101 /wd4100"
+set "CommonFlags=/Z7 /Oi /MT /TC /nologo /I^"%SourceDir%^" %WarningsFlags%"
 
 :: Tools
 set "CC=cl.exe"
 set "LD=link.exe"
 
+:: TODO: This doesn't work, try to solve this shit
 :: Check and setup build tools if needed
-where %CC% >NUL
-if not %ErrorLevel%==0 (
-    call build.bat
-)
+:: where %CC% 2>&1 1>NUL || call shell.bat
 
 if not exist "%BuildDir%" (
     echo [*] Creating %BuildDir%
     mkdir "%BuildDir%"
 )
 
+:: Unit tests
 pushd %BuildDir%
 
-%CC% %CCFlags% "%SourceDir%\renderer\renderer.c"
+%CC% %CommonFlags% "%TestsDir%\test_renderer_vector.c"
+
+%CC% %CommonFlags% "%SourceDir%\answers\answers.c"
 
 popd
