@@ -23,7 +23,8 @@ $ cl.exe
 ```
 
 ## `build.bat`
-This will use the other shell.bat in case of not finding the compiler. If you want to not use the latest installed compiler, you can open the developer tools cmd of the specific version, and run `build.bat` from there.
+To use this script, the enviorment variables of the MSVC build tools should be set before calling this script.
+You can do this either by calling first `shell.bat` or by activating yourself the `developer command prompt`.
 
 __Note__: This code base was developed and tested with the build tools provided with __Visual Studio 2017__
 

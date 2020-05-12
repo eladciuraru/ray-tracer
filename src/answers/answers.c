@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// TODO: Remove this
+#include "renderer/renderer.c"
+
 #include "answers/chapter1.c"
 
 
@@ -13,5 +16,7 @@ answer_func answers[] = {
 
 
 int main(int argc, char **argv) {
+    answer_chapter1();
+
     return EXIT_SUCCESS;
 }
