@@ -25,8 +25,13 @@ if not exist "%BuildDir%" (
 :: Unit tests
 pushd %BuildDir%
 
-%CC% %CommonFlags% "%TestsDir%\test_renderer_vector.c"
+echo [*] Building Tests
+for %%n in ("%TestsDir%\*") do (
+    %CC% %CommonFlags% "%%n"
+)
 
+echo.
+echo [*] Building answers
 %CC% %CommonFlags% "%SourceDir%\answers\answers.c"
 
 popd

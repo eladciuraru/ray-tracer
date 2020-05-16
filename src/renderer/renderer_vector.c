@@ -1,12 +1,4 @@
 
-static inline bool _f32_compare(f32 num, f32 other) {
-    const f32 epsilon = 0.00001f;
-
-    return (num > other) ?
-           ((num - other) < epsilon) :
-           ((other - num) < epsilon);
-}
-
 #define _VEC4_TYPE_POINT    1.0f
 #define _VEC4_TYPE_VECTOR   0.0f
 
@@ -21,110 +13,110 @@ inline vec4 vec4_make_vector(f32 x, f32 y, f32 z) {
 }
 
 
-inline bool vec4_is_point(vec4 *vec) {
-    return vec->w == _VEC4_TYPE_POINT;
+inline bool vec4_is_point(vec4 *v) {
+    return v->w == _VEC4_TYPE_POINT;
 }
 
 
-inline bool vec4_is_vector(vec4 *vec) {
-    return vec->w == _VEC4_TYPE_VECTOR;
+inline bool vec4_is_vector(vec4 *v) {
+    return v->w == _VEC4_TYPE_VECTOR;
 }
 
 
-inline bool vec4_compare(vec4 *vec, vec4 *other) {
-    return _f32_compare(vec->x, other->x) &&
-           _f32_compare(vec->y, other->y) &&
-           _f32_compare(vec->z, other->z) &&
-           _f32_compare(vec->w, other->w);
+inline bool vec4_compare(vec4 *v1, vec4 *v2) {
+    return _f32_compare(v1->x, v2->x) &&
+           _f32_compare(v1->y, v2->y) &&
+           _f32_compare(v1->z, v2->z) &&
+           _f32_compare(v1->w, v2->w);
 }
 
 
-inline vec4 vec4_add(vec4 *vec, vec4 *other) {
+inline vec4 vec4_add(vec4 *v1, vec4 *v2) {
     return (vec4) {
-        vec->x + other->x,
-        vec->y + other->y,
-        vec->z + other->z,
-        vec->w + other->w,
+        v1->x + v2->x,
+        v1->y + v2->y,
+        v1->z + v2->z,
+        v1->w + v2->w,
     };
 }
 
 
-inline vec4 vec4_sub(vec4 *vec, vec4 *other) {
+inline vec4 vec4_sub(vec4 *v1, vec4 *v2) {
     return (vec4) {
-        vec->x - other->x,
-        vec->y - other->y,
-        vec->z - other->z,
-        vec->w - other->w,
+        v1->x - v2->x,
+        v1->y - v2->y,
+        v1->z - v2->z,
+        v1->w - v2->w,
     };
 }
 
 
-inline vec4 vec4_negate(vec4 *vec) {
+inline vec4 vec4_negate(vec4 *v) {
     return (vec4) {
-        -vec->x,
-        -vec->y,
-        -vec->z,
-        -vec->w
+        -v->x,
+        -v->y,
+        -v->z,
+        -v->w
     };
 }
 
 
-inline vec4 vec4_scalar_mul(vec4 *vec, f32 scalar) {
+inline vec4 vec4_scalar_mul(vec4 *v, f32 scalar) {
     return (vec4) {
-        vec->x * scalar,
-        vec->y * scalar,
-        vec->z * scalar,
-        vec->w * scalar,
+        v->x * scalar,
+        v->y * scalar,
+        v->z * scalar,
+        v->w * scalar,
     };
 }
 
 
-inline vec4 vec4_scalar_div(vec4 *vec, f32 scalar) {
+inline vec4 vec4_scalar_div(vec4 *v, f32 scalar) {
     return (vec4) {
-        vec->x / scalar,
-        vec->y / scalar,
-        vec->z / scalar,
-        vec->w / scalar,
+        v->x / scalar,
+        v->y / scalar,
+        v->z / scalar,
+        v->w / scalar,
     };
 }
 
 
 // TODO: Replace this to not relay on the CRT
 #include <math.h>
-inline f32 vec4_magnitude(vec4 *vec) {
-    return (f32) sqrt(vec->x * vec->x +
-                      vec->y * vec->y +
-                      vec->z * vec->z +
-                      vec->w * vec->w);
+inline f32 vec4_magnitude(vec4 *v) {
+    return (f32) sqrt(v->x * v->x +
+                      v->y * v->y +
+                      v->z * v->z +
+                      v->w * v->w);
 }
 
 
-inline vec4 vec4_normalize(vec4 *vec) {
-    const f32 magni = vec4_magnitude(vec);
+inline vec4 vec4_normalize(vec4 *v) {
+    const f32 magni = vec4_magnitude(v);
 
     return (vec4) {
-        vec->x / magni,
-        vec->y / magni,
-        vec->z / magni,
-        vec->w / magni,
+        v->x / magni,
+        v->y / magni,
+        v->z / magni,
+        v->w / magni,
     };
 }
 
 
-inline f32 vec4_dot_product(vec4 *vec, vec4 *other) {
-    return vec->x * other->x +
-           vec->y * other->y +
-           vec->z * other->z +
-           vec->w * other->w;
+inline f32 vec4_dot_product(vec4 *v1, vec4 *v2) {
+    return v1->x * v2->x +
+           v1->y * v2->y +
+           v1->z * v2->z +
+           v1->w * v2->w;
 }
 
 
-inline vec4 vec4_cross_product(vec4 *vec, vec4 *other) {
+inline vec4 vec4_cross_product(vec4 *v1, vec4 *v2) {
     // This implementation works only for when W=0, which means vector
     // for simplicity
     return (vec4) {
-        vec->y * other->z - vec->z * other->y,
-        vec->z * other->x - vec->x * other->z,
-        vec->x * other->y - vec->y * other->x,
+        v1->y * v2->z - v1->z * v2->y,
+        v1->z * v2->x - v1->x * v2->z,
+        v1->x * v2->y - v1->y * v2->x,
     };
 }

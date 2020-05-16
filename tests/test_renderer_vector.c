@@ -188,7 +188,7 @@ void test_cross_product_vector(void) {
 
 
 int main(void) {
-    printf("Running tests for renderer_types.c\n");
+    printf("Running tests for renderer_vector.c\n");
 
     test_points_and_vectors();
     test_add_vectors();

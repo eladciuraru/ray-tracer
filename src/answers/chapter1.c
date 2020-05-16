@@ -1,4 +1,5 @@
 
+#include <time.h>
 
 typedef struct _projectile {
     vec4 position;
@@ -22,11 +23,15 @@ static projectile tick(environment *env, projectile *proj) {
 
 
 static void answer_chapter1(void) {
+    srand((unsigned int) time(NULL));
+    f32 scalar = (f32) (rand() % 20);
+
     projectile proj = {
         .position = vec4_make_point(0.0f, 1.0f, 0.0f),
         .velocity = vec4_make_vector(1.0f, 1.0f, 0.0f),
     };
     proj.velocity = vec4_normalize(&proj.velocity);
+    proj.velocity = vec4_scalar_mul(&proj.velocity, scalar);
 
     environment env = {
         .gravity = vec4_make_vector(0.0f, -0.1f, 0.0f),

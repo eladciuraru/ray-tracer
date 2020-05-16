@@ -5,6 +5,9 @@ temp
 
 # File types
 *.exe
+*.obj
+*.pdb
+*.ilk
 
 # Reinclude specific items
 !vswhere.exe
