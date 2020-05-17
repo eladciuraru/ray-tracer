@@ -1,6 +1,4 @@
 
-#include <time.h>
-
 typedef struct _projectile {
     vec4 position;
     vec4 velocity;
@@ -23,25 +21,24 @@ static projectile tick(environment *env, projectile *proj) {
 
 
 static void answer_chapter1(void) {
-    srand((unsigned int) time(NULL));
-    f32 scalar = (f32) (rand() % 20);
-
     projectile proj = {
         .position = vec4_make_point(0.0f, 1.0f, 0.0f),
         .velocity = vec4_make_vector(1.0f, 1.0f, 0.0f),
     };
     proj.velocity = vec4_normalize(&proj.velocity);
-    proj.velocity = vec4_scalar_mul(&proj.velocity, scalar);
+    proj.velocity = vec4_scalar_mul(&proj.velocity, 21.25f);
 
     environment env = {
-        .gravity = vec4_make_vector(0.0f, -0.1f, 0.0f),
+        .gravity = vec4_make_vector(0.0f, -0.5f, 0.0f),
         .wind    = vec4_make_vector(-0.01f, 0.0f, 0.0f),
     };
 
-    for (usize i = 1; proj.position.y > 0.0f; i++) {
+    usize i = 0;
+    for (; proj.position.y > 0.0f; i++) {
         vec4 pos = proj.position;
-        printf("%2zu) Projectile(%.3f, %.3f, %.3f)\n", i, pos.x, pos.y, pos.z);
+        printf("Position - Point(%.3f, %.3f, %.3f)\n", pos.x, pos.y, pos.z);
 
         proj = tick(&env, &proj);
     }
+    printf("It took %zu ticks to reach the ground\n", i);
 }

@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 // TODO: Remove this
 #include "renderer/renderer.c"
 
-#include "answers/chapter1.c"
+#include "answers/answers_utils.c"
+#include "answers/answers_chapter1.c"
 
 
 typedef void (*answer_func)(void);
