@@ -21,6 +21,8 @@ typedef uintptr_t usize;
 typedef float  f32;
 typedef double f64;
 
+typedef char *cstring;
+
 
 // Vector/Point type
 typedef struct _vec4 { f32 x, y, z, w; } vec4;
@@ -59,6 +61,40 @@ typedef struct _canvas {
     color3 *pixels;
 } canvas;
 
+#pragma pack(push, 1)
+typedef struct _bitmap_header {
+    u16 magic;
+    u32 file_size;
+    u16 reserved[2];
+    u32 pix_offset;
+} bitmap_header;
+
+typedef struct _bitmap_info {
+    u32 dib_header_size;
+    u32 width;
+    u32 height;
+    u16 planes;
+    u16 bit_count;
+    u32 compression;
+    u32 image_size;
+    i32 x_pixels_per_meter;
+    i32 y_pixels_per_meter;
+    u32 color_used;
+    u32 color_important;
+} bitmap_info;
+
+typedef struct _bitmap {
+    bitmap_header header;
+    bitmap_info   info;
+    u32           pixels[];
+} bitmap;
+#pragma pack(pop)
+
+#define BITMAP_MAGIC            'MB'
+#define BITMAP_BPP              sizeof(u32) * 8
+#define BITMAP_PIX_OFFSET       offsetof(bitmap, pixels)
+
 canvas         canvas_create   (u32 width, u32 height);
 inline void    canvas_set_pixel(canvas *can, u32 x, u32 y, color3 *color);
 inline color3 *canvas_get_pixel(canvas *can, u32 x, u32 y);
+bitmap        *canvas_as_bitmap(canvas *can);

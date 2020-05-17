@@ -15,7 +15,7 @@ static inline void _assert(bool condition) {
 // TODO: Remove this
 #include <stdlib.h>
 // This function exists to be able to easily swap calling malloc for memory allocation
-static void *_allocate(usize size) {
+static void *_allocate_buffer_no_zero(usize size) {
     void *addr = malloc(size);
 
     // In later implementation of allcoate, we don't want to ever fail,
@@ -26,7 +26,7 @@ static void *_allocate(usize size) {
 }
 
 
-static void *_allocate_zeroed(usize size) {
+static void *_allocate_buffer(usize size) {
     void *addr = calloc(size, sizeof(u8));
 
     // In later implementation of allcoate, we don't want to ever fail,

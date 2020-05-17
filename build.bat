@@ -6,8 +6,8 @@ set "BuildDir=%ParentDir%\build"
 set "SourceDir=%ParentDir%\src"
 set "TestsDir=%ParentDir%\tests"
 
-set "WarningsFlags=/W4 /WX /wd4204 /wd4101 /wd4100"
-set "CommonFlags=/Z7 /Oi /MT /TC /nologo /I^"%SourceDir%^" %WarningsFlags%"
+set "WarningsFlags=/W4 /WX /wd4204 /wd4101 /wd4100 /wd4200"
+set "CommonFlags=/Z7 /Oi /MT /TC /nologo /I^"%SourceDir%^" %WarningsFlags% /D_CRT_SECURE_NO_WARNINGS=1"
 
 :: Tools
 set "CC=cl.exe"

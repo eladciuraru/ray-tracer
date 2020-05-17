@@ -28,11 +28,27 @@ void test_canvas_operations(void) {
 }
 
 
+void test_bitmap(void) {
+    canvas can  = canvas_create(10, 20);
+    color3 blue = { 0.0f, 0.0f, 1.0f };
+
+    for (usize i = 0; i < can.length; i++) {
+        can.pixels[i] = blue;
+    }
+
+    bitmap *bmp = canvas_as_bitmap(&can);
+    FILE *file = fopen("test.bmp", "wb");
+    fwrite(bmp, sizeof(u8), bmp->header.file_size, file);
+    fclose(file);
+}
+
+
 int main(void) {
     printf("Running tests for renderer_color.c\n");
 
     test_canvas_init();
     test_canvas_operations();
+    test_bitmap();
 
     printf("Succesfully ran all tests\n");
 

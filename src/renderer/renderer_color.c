@@ -41,3 +41,10 @@ inline color3 color3_mul(color3 *c1, color3 *c2) {
         c1->b * c2->b,
     };
 }
+
+
+inline u32 color3_as_u32(color3 *c) {
+    return ((u8) (c->b * 255)) |
+           ((u8) (c->g * 255)) << 8 |
+           ((u8) (c->r * 255)) << 16;
+}
