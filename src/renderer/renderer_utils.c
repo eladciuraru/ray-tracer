@@ -2,14 +2,10 @@
 #include <assert.h>
 
 #ifndef _RELEASE
-    #define _ASSERT(condition) _assert(condition)
+    #define _ASSERT(condition) assert(condition)
 #else
     #define _ASSERT(condition)
 #endif
-
-static inline void _assert(bool condition) {
-    assert(condition);
-}
 
 
 // TODO: Remove this

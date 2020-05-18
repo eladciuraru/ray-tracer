@@ -114,6 +114,9 @@ inline f32 vec4_dot_product(vec4 *v1, vec4 *v2) {
 inline vec4 vec4_cross_product(vec4 *v1, vec4 *v2) {
     // This implementation works only for when W=0, which means vector
     // for simplicity
+    _ASSERT(vec4_is_vector(v1) == true);
+    _ASSERT(vec4_is_vector(v2) == true);
+
     return (vec4) {
         v1->y * v2->z - v1->z * v2->y,
         v1->z * v2->x - v1->x * v2->z,

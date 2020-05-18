@@ -70,7 +70,7 @@ typedef struct _bitmap_header {
 } bitmap_header;
 
 typedef struct _bitmap_info {
-    u32 dib_header_size;
+    u32 info_size;
     u32 width;
     u32 height;
     u16 planes;

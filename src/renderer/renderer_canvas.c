@@ -40,11 +40,11 @@ bitmap *canvas_as_bitmap(canvas *can) {
 
     // Set up bitmap info
     bmp->info = (bitmap_info) {
-        .dib_header_size = sizeof(bitmap_info),
-        .width           =  (i32) can->width,
-        .height          = -(i32) can->height,  // Minus height for top down bitmap
-        .planes          = 1,
-        .bit_count       = BITMAP_BPP,
+        .info_size = sizeof(bitmap_info),
+        .width     =  (i32) can->width,
+        .height    = -(i32) can->height,  // Minus height for top down bitmap
+        .planes    = 1,
+        .bit_count = BITMAP_BPP,
     };
 
     for (usize i = 0; i < can->length; i++) {
