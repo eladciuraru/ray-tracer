@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "renderer/renderer.c"
+#include "renderer/renderer.h"
 
 
 void test_points_and_vectors(void) {
@@ -122,7 +122,7 @@ void test_magnitude_vector(void) {
         f32   magni = tests[i].magni;
 
         f32 res = vec4_magnitude(v1);
-        assert(_f32_compare(res, magni) == true);
+        assert(f32_compare(res, magni) == true);
     }
 }
 
@@ -147,7 +147,7 @@ void test_normalize_vector(void) {
         vec4 res   = vec4_normalize(v1);
         f32  magni = vec4_magnitude(&res);
         assert(vec4_compare(&res,  norm) == true);
-        assert(_f32_compare(magni, 1)    == true);
+        assert(f32_compare(magni, 1)     == true);
     }
 }
 
@@ -158,7 +158,7 @@ void test_dot_product_vector(void) {
     f32  dot = 20;
 
     f32 res = vec4_dot_product(&v1, &v2);
-    assert(_f32_compare(res, dot) == true);
+    assert(f32_compare(res, dot) == true);
 }
 
 

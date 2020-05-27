@@ -1,8 +1,8 @@
 
 inline bool color3_compare(color3 *c1, color3 *c2) {
-    return _f32_compare(c1->r, c2->r) &&
-           _f32_compare(c1->g, c2->g) &&
-           _f32_compare(c1->b, c2->b);
+    return f32_compare(c1->r, c2->r) &&
+           f32_compare(c1->g, c2->g) &&
+           f32_compare(c1->b, c2->b);
 }
 
 

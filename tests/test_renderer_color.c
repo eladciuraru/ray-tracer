@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "renderer/renderer.c"
+#include "renderer/renderer.h"
 
 
 void test_add_colors(void) {

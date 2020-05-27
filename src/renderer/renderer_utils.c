@@ -40,7 +40,7 @@ static void *_deallocate(void *addr) {
 }
 
 
-static inline bool _f32_compare(f32 num, f32 other) {
+inline bool f32_compare(f32 num, f32 other) {
     const f32 epsilon = 0.00001f;
 
     return (num > other) ?

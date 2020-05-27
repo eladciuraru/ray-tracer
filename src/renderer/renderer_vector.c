@@ -24,10 +24,10 @@ inline bool vec4_is_vector(vec4 *v) {
 
 
 inline bool vec4_compare(vec4 *v1, vec4 *v2) {
-    return _f32_compare(v1->x, v2->x) &&
-           _f32_compare(v1->y, v2->y) &&
-           _f32_compare(v1->z, v2->z) &&
-           _f32_compare(v1->w, v2->w);
+    return f32_compare(v1->x, v2->x) &&
+           f32_compare(v1->y, v2->y) &&
+           f32_compare(v1->z, v2->z) &&
+           f32_compare(v1->w, v2->w);
 }
 
 

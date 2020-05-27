@@ -7,7 +7,9 @@ set "SourceDir=%ParentDir%\src"
 set "TestsDir=%ParentDir%\tests"
 
 set "WarningsFlags=/W4 /WX /wd4204 /wd4101 /wd4100 /wd4200"
-set "CommonFlags=/Z7 /Oi /MT /TC /nologo /I^"%SourceDir%^" %WarningsFlags% /D_CRT_SECURE_NO_WARNINGS=1"
+set "CommonCompilerFlags=/Z7 /Oi /MT /TC /nologo /I^"%SourceDir%^" ^
+                         %WarningsFlags% /D_CRT_SECURE_NO_WARNINGS=1"
+set "CommonLinkerFlags=/link renderer.obj"
 
 :: Tools
 set "CC=cl.exe"
@@ -22,16 +24,19 @@ if not exist "%BuildDir%" (
     mkdir "%BuildDir%"
 )
 
-:: Unit tests
 pushd %BuildDir%
 
+echo [*] Building Renderer Code
+%CC% %CommonCompilerFlags% /c "%SourceDir%\renderer\renderer.c"
+
+echo.
 echo [*] Building Tests
 for %%n in ("%TestsDir%\*") do (
-    %CC% %CommonFlags% "%%n"
+    %CC% %CommonCompilerFlags% "%%n" %CommonLinkerFlags%
 )
 
 echo.
 echo [*] Building answers
-%CC% %CommonFlags% "%SourceDir%\answers\answers.c"
+%CC% %CommonCompilerFlags% "%SourceDir%\answers\answers.c" %CommonLinkerFlags%
 
 popd

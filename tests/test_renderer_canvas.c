@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "renderer/renderer.c"
+#include "renderer/renderer.h"
 
 
 void test_canvas_init(void) {
@@ -36,10 +36,14 @@ void test_bitmap(void) {
         can.pixels[i] = blue;
     }
 
-    bitmap *bmp = canvas_as_bitmap(&can);
-    FILE *file = fopen("test.bmp", "wb");
-    fwrite(bmp, sizeof(u8), bmp->header.file_size, file);
-    fclose(file);
+    bitmap *bmp   = canvas_as_bitmap(&can);
+    u32     pixel = 0x000000FF;
+
+    bool pixel_flag = true;
+    for (usize i = 0; i < can.length; i++) {
+        pixel_flag &= bmp->pixels[i] == pixel;
+    }
+    assert(pixel_flag == true);
 }
 
 

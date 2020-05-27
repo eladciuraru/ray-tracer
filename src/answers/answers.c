@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
+#include <math.h>
 
-
-// TODO: Remove this
-#include "renderer/renderer.c"
+#include "renderer/renderer.h"
 
 #include "answers/answers_utils.c"
 #include "answers/answers_chapter1.c"
