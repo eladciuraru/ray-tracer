@@ -3,27 +3,27 @@
 #define _VEC4_TYPE_VECTOR   0.0f
 
 
-inline vec4 vec4_make_point(f32 x, f32 y, f32 z) {
+vec4 vec4_make_point(f32 x, f32 y, f32 z) {
     return (vec4) { x, y, z, _VEC4_TYPE_POINT };
 }
 
 
-inline vec4 vec4_make_vector(f32 x, f32 y, f32 z) {
+vec4 vec4_make_vector(f32 x, f32 y, f32 z) {
     return (vec4) { x, y, z, _VEC4_TYPE_VECTOR };
 }
 
 
-inline bool vec4_is_point(vec4 *v) {
+bool vec4_is_point(vec4 *v) {
     return v->w == _VEC4_TYPE_POINT;
 }
 
 
-inline bool vec4_is_vector(vec4 *v) {
+bool vec4_is_vector(vec4 *v) {
     return v->w == _VEC4_TYPE_VECTOR;
 }
 
 
-inline bool vec4_compare(vec4 *v1, vec4 *v2) {
+bool vec4_compare(vec4 *v1, vec4 *v2) {
     return f32_compare(v1->x, v2->x) &&
            f32_compare(v1->y, v2->y) &&
            f32_compare(v1->z, v2->z) &&
@@ -31,7 +31,7 @@ inline bool vec4_compare(vec4 *v1, vec4 *v2) {
 }
 
 
-inline vec4 vec4_add(vec4 *v1, vec4 *v2) {
+vec4 vec4_add(vec4 *v1, vec4 *v2) {
     return (vec4) {
         v1->x + v2->x,
         v1->y + v2->y,
@@ -41,7 +41,7 @@ inline vec4 vec4_add(vec4 *v1, vec4 *v2) {
 }
 
 
-inline vec4 vec4_sub(vec4 *v1, vec4 *v2) {
+vec4 vec4_sub(vec4 *v1, vec4 *v2) {
     return (vec4) {
         v1->x - v2->x,
         v1->y - v2->y,
@@ -51,7 +51,7 @@ inline vec4 vec4_sub(vec4 *v1, vec4 *v2) {
 }
 
 
-inline vec4 vec4_negate(vec4 *v) {
+vec4 vec4_negate(vec4 *v) {
     return (vec4) {
         -v->x,
         -v->y,
@@ -61,7 +61,7 @@ inline vec4 vec4_negate(vec4 *v) {
 }
 
 
-inline vec4 vec4_scalar_mul(vec4 *v, f32 scalar) {
+vec4 vec4_scalar_mul(vec4 *v, f32 scalar) {
     return (vec4) {
         v->x * scalar,
         v->y * scalar,
@@ -71,7 +71,7 @@ inline vec4 vec4_scalar_mul(vec4 *v, f32 scalar) {
 }
 
 
-inline vec4 vec4_scalar_div(vec4 *v, f32 scalar) {
+vec4 vec4_scalar_div(vec4 *v, f32 scalar) {
     return (vec4) {
         v->x / scalar,
         v->y / scalar,
@@ -83,7 +83,7 @@ inline vec4 vec4_scalar_div(vec4 *v, f32 scalar) {
 
 // TODO: Replace this to not relay on the CRT
 #include <math.h>
-inline f32 vec4_magnitude(vec4 *v) {
+f32 vec4_magnitude(vec4 *v) {
     return (f32) sqrt(v->x * v->x +
                       v->y * v->y +
                       v->z * v->z +
@@ -91,7 +91,7 @@ inline f32 vec4_magnitude(vec4 *v) {
 }
 
 
-inline vec4 vec4_normalize(vec4 *v) {
+vec4 vec4_normalize(vec4 *v) {
     const f32 magni = vec4_magnitude(v);
 
     return (vec4) {
@@ -103,7 +103,7 @@ inline vec4 vec4_normalize(vec4 *v) {
 }
 
 
-inline f32 vec4_dot_product(vec4 *v1, vec4 *v2) {
+f32 vec4_dot_product(vec4 *v1, vec4 *v2) {
     return v1->x * v2->x +
            v1->y * v2->y +
            v1->z * v2->z +
@@ -111,7 +111,7 @@ inline f32 vec4_dot_product(vec4 *v1, vec4 *v2) {
 }
 
 
-inline vec4 vec4_cross_product(vec4 *v1, vec4 *v2) {
+vec4 vec4_cross_product(vec4 *v1, vec4 *v2) {
     // This implementation works only for when W=0, which means vector
     // for simplicity
     _ASSERT(vec4_is_vector(v1) == true);

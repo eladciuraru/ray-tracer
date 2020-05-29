@@ -11,7 +11,7 @@ canvas canvas_create(u32 width, u32 height) {
 }
 
 
-inline void canvas_set_pixel(canvas *can, u32 x, u32 y, color3 *color) {
+void canvas_set_pixel(canvas *can, u32 x, u32 y, color3 *color) {
     u32 index = y * can->width + x;
     _ASSERT(0 <= index && index < can->length);
 
@@ -19,7 +19,7 @@ inline void canvas_set_pixel(canvas *can, u32 x, u32 y, color3 *color) {
 }
 
 
-inline color3 *canvas_get_pixel(canvas *can, u32 x, u32 y) {
+color3 *canvas_get_pixel(canvas *can, u32 x, u32 y) {
     u32 index = y * can->width + x;
     _ASSERT(0 <= index && index < can->length);
 

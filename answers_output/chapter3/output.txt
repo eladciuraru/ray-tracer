@@ -1,0 +1,35 @@
+Q1: What happens when you invert the identity matrix?
+A1: iden == inverse(iden):
+{
+	1.000, -0.000, 0.000, -0.000, 
+	-0.000, 1.000, -0.000, 0.000, 
+	0.000, -0.000, 1.000, -0.000, 
+	-0.000, 0.000, -0.000, 1.000, 
+}
+
+Q2: What do you get when you multiply a matrix by its inverse?
+A2: mat * inverse(mat) == iden
+{
+	1.000, 0.000, -0.000, 0.000, 
+	0.000, 1.000, -0.000, 0.000, 
+	0.000, 0.000, 1.000, -0.000, 
+	0.000, 0.000, -0.000, 1.000, 
+}
+
+Q3: Is there any difference between the inverse of the transpose of a matrix, and the transpose of the inverse?
+A3: inverse(transpose(mat)) == transpose(inverse(matrix))
+{
+	0.214, -0.005, -0.093, -0.259, 
+	0.143, -0.312, 0.037, -0.296, 
+	-0.286, 0.439, 0.185, 0.519, 
+	0.143, -0.349, -0.111, -0.111, 
+}
+{
+	0.214, -0.005, -0.093, -0.259, 
+	0.143, -0.312, 0.037, -0.296, 
+	-0.286, 0.439, 0.185, 0.519, 
+	0.143, -0.349, -0.111, -0.111, 
+}
+
+Q4: Try changing any single element of the identity matrix to a different number and multiply it by a tuple, what happens?
+A4: iden[1][1] = 23 -> Y * 23 = { 1.000, 46.000, 3.000, 4.000 }

@@ -153,7 +153,7 @@ void test_transpose_matrix4(void) {
 void test_determinant_matrix2(void) {
     mat2 mat = {
          1.0f, 5.0f,
-        -3.0f, 2.0f
+        -3.0f, 2.0f,
     };
     f32 det  = 17.0f;
 
@@ -178,22 +178,193 @@ void test_submatrix_matrix3(void) {
 }
 
 
-// void test_submatrix_matrix4(void) {
-//     mat4 mat  = {
-//         -6.0f, 1.0f,  1.0f, 6.0f,
-//         -8.0f, 5.0f,  8.0f, 6.0f,
-//         -1.0f, 0.0f,  8.0f, 2.0f,
-//         -7.0f, 1.0f, -1.0f, 1.0f,
-//     };
-//     mat3 subm = {
-//         -6.0f,  1.0f, 6.0f,
-//         -8.0f,  8.0f, 6.0f,
-//         -7.0f, -1.0f, 1.0f,
-//     };
+void test_submatrix_matrix4(void) {
+    mat4 mat  = {
+        -6.0f, 1.0f,  1.0f, 6.0f,
+        -8.0f, 5.0f,  8.0f, 6.0f,
+        -1.0f, 0.0f,  8.0f, 2.0f,
+        -7.0f, 1.0f, -1.0f, 1.0f,
+    };
+    mat3 subm = {
+        -6.0f,  1.0f, 6.0f,
+        -8.0f,  8.0f, 6.0f,
+        -7.0f, -1.0f, 1.0f,
+    };
 
-//     mat2 res = mat4_submatrix(&mat, 0, 2);
-//     assert(mat3_compare(&res, &subm) == true);
-// }
+    mat3 res = mat4_submatrix(&mat, 2, 1);
+    assert(mat3_compare(&res, &subm) == true);
+}
+
+
+void test_minor_matrix3(void) {
+    mat3 mat  = {
+        3.0f,  5.0f,  0.0f,
+        2.0f, -1.0f, -7.0f,
+        6.0f, -1.0f,  5.0f,
+    };
+    f32 minor = 25;
+
+    f32 res = mat3_minor(&mat, 1, 0);
+    assert(f32_compare(res, minor) == true);
+}
+
+
+void test_cofactor_matrix3(void) {
+    struct { u32 row, col; f32 cofactor; } tests[] = {
+        { 0, 0, -12 },
+        { 1, 0, -25 },
+    };
+    mat3 mat = {
+        3.0f,  5.0f,  0.0f,
+        2.0f, -1.0f, -7.0f,
+        6.0f, -1.0f,  5.0f,
+    };
+
+    for (usize i = 0; i < _countof(tests); i++) {
+        usize row = tests[i].row;
+        usize col = tests[i].col;
+        f32   cof = tests[i].cofactor;
+
+        f32 res = mat3_cofactor(&mat, row, col);
+        assert(f32_compare(res, cof) == true);
+    }
+}
+
+
+void test_determinant_matrix3(void) {
+    mat3 mat = {
+         1.0f, 2.0f,  6.0f,
+        -5.0f, 8.0f, -4.0f,
+         2.0f, 6.0f,  4.0f,
+    };
+    f32 det  = -196.0f;
+
+    f32 res = mat3_determinant(&mat);
+    assert(f32_compare(res, det) == true);
+}
+
+
+void test_determinant_matrix4(void) {
+    mat4 mat = {
+        -2.0f, -8.0f,  3.0f,  5.0f,
+        -3.0f,  1.0f,  7.0f,  3.0f,
+         1.0f,  2.0f, -9.0f,  6.0f,
+        -6.0f,  7.0f,  7.0f, -9.0f,
+    };
+    f32 det  = -4071;
+
+    f32 res = mat4_determinant(&mat);
+    assert(f32_compare(res, det) == true);
+}
+
+
+void test_is_invertible_matrix4(void) {
+    struct { mat4 mat; bool flag; } tests[] = {
+        {
+            {
+                6.0f,  4.0f, 4.0f,  4.0f,
+                5.0f,  5.0f, 7.0f,  6.0f,
+                4.0f, -9.0f, 3.0f, -7.0f,
+                9.0f,  1.0f, 7.0f, -6.0f,
+            },
+            true
+        },
+        {
+            {
+                -4.0f,  2.0f, -2.0f, -3.0f,
+                 9.0f,  6.0f,  2.0f,  6.0f,
+                 0.0f, -5.0f,  1.0f, -5.0f,
+                 0.0f,  0.0f,  0.0f,  0.0f,
+            },
+            false
+        }
+    };
+
+    for (usize i = 0; i < _countof(tests); i++) {
+        mat4 *mat  = &tests[i].mat;
+        bool  flag = tests[i].flag;
+
+        bool res = mat4_is_invertible(mat);
+        assert(res == flag);
+    }
+}
+
+
+void test_inverse_matrix4(void) {
+    struct { mat4 mat, inv; } tests[] = {
+        {
+            {
+                -5.0f,  2.0f,  6.0f, -8.0f,
+                 1.0f, -5.0f,  1.0f,  8.0f,
+                 7.0f,  7.0f, -6.0f, -7.0f,
+                 1.0f, -3.0f,  7.0f,  4.0f,
+            },
+            {
+                 0.21805f,  0.45113f,  0.24060f, -0.04511f,
+                -0.80827f, -1.45677f, -0.44361f,  0.52068f,
+                -0.07895f, -0.22368f, -0.05263f,  0.19737f,
+                -0.52256f, -0.81391f, -0.30075f,  0.30639f,
+            }
+        },
+        {
+            {
+                 8.0f, -5.0f,  9.0f,  2.0f,
+                 7.0f,  5.0f,  6.0f,  1.0f,
+                -6.0f,  0.0f,  9.0f,  6.0f,
+                -3.0f,  0.0f, -9.0f, -4.0f,
+            },
+            {
+                -0.15385f, -0.15385f, -0.28205f, -0.53846f,
+                -0.07692f,  0.12308f,  0.02564f,  0.03077f,
+                 0.35897f,  0.35897f,  0.43590f,  0.92308f,
+                -0.69231f, -0.69231f, -0.76923f, -1.92308f,
+            }
+        },
+        {
+            {
+                 9.0f,  3.0f,  0.0f,  9.0f,
+                -5.0f, -2.0f, -6.0f, -3.0f,
+                -4.0f,  9.0f,  6.0f,  4.0f,
+                -7.0f,  6.0f,  6.0f,  2.0f,
+            },
+            {
+                -0.04074f, -0.07778f,  0.14444f, -0.22222f,
+                -0.07778f,  0.03333f,  0.36667f, -0.33333f,
+                -0.02901f, -0.14630f, -0.10926f,  0.12963f,
+                 0.17778f,  0.06667f, -0.26667f,  0.33333f,
+            }
+        },
+    };
+
+    for (usize i = 0; i < _countof(tests); i++) {
+        mat4 *mat = &tests[i].mat;
+        mat4 *inv = &tests[i].inv;
+
+        mat4 res = mat4_inverse(mat);
+        assert(mat4_compare(&res, inv) == true);
+    }
+}
+
+
+void test_inverse_matrix4_2(void) {
+    mat4 m1 = {
+         3.0f, -9.0f,  7.0f,  3.0f,
+         3.0f, -8.0f,  2.0f, -9.0f,
+        -4.0f,  4.0f,  4.0f,  1.0f,
+        -6.0f,  5.0f, -1.0f,  1.0f,
+    };
+    mat4 m2 = {
+        8.0f,  2.0f, 2.0f, 2.0f,
+        3.0f, -1.0f, 7.0f, 0.0f,
+        7.0f,  0.0f, 5.0f, 4.0f,
+        6.0f, -2.0f, 0.0f, 5.0f,
+    };
+    mat4 m3  = mat4_mul(&m1, &m2);
+
+    mat4 res = mat4_inverse(&m2);
+    res      = mat4_mul(&m3, &res);
+    assert(mat4_compare(&res, &m1) == true);
+}
 
 
 int main(void) {
@@ -208,7 +379,14 @@ int main(void) {
     test_transpose_matrix4();
     test_determinant_matrix2();
     test_submatrix_matrix3();
-    // test_submatrix_matrix4();
+    test_submatrix_matrix4();
+    test_minor_matrix3();
+    test_cofactor_matrix3();
+    test_determinant_matrix3();
+    test_determinant_matrix4();
+    test_is_invertible_matrix4();
+    test_inverse_matrix4();
+    test_inverse_matrix4_2();
 
     printf("Succesfully ran all tests\n");
 

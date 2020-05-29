@@ -1,12 +1,12 @@
 
-inline bool color3_compare(color3 *c1, color3 *c2) {
+bool color3_compare(color3 *c1, color3 *c2) {
     return f32_compare(c1->r, c2->r) &&
            f32_compare(c1->g, c2->g) &&
            f32_compare(c1->b, c2->b);
 }
 
 
-inline color3 color3_add(color3 *c1, color3 *c2) {
+color3 color3_add(color3 *c1, color3 *c2) {
     return (color3) {
         c1->r + c2->r,
         c1->g + c2->g,
@@ -15,7 +15,7 @@ inline color3 color3_add(color3 *c1, color3 *c2) {
 }
 
 
-inline color3 color3_sub(color3 *c1, color3 *c2) {
+color3 color3_sub(color3 *c1, color3 *c2) {
     return (color3) {
         c1->r - c2->r,
         c1->g - c2->g,
@@ -24,7 +24,7 @@ inline color3 color3_sub(color3 *c1, color3 *c2) {
 }
 
 
-inline color3 color3_scalar_mul(color3 *c, f32 scalar) {
+color3 color3_scalar_mul(color3 *c, f32 scalar) {
     return (color3) {
         c->r * scalar,
         c->g * scalar,
@@ -34,7 +34,7 @@ inline color3 color3_scalar_mul(color3 *c, f32 scalar) {
 
 
 // This is also called hadamard product
-inline color3 color3_mul(color3 *c1, color3 *c2) {
+color3 color3_mul(color3 *c1, color3 *c2) {
     return (color3) {
         c1->r * c2->r,
         c1->g * c2->g,
@@ -43,7 +43,7 @@ inline color3 color3_mul(color3 *c1, color3 *c2) {
 }
 
 
-inline u32 color3_as_u32(color3 *c) {
+u32 color3_as_u32(color3 *c) {
     return ((u8) (c->b * 255)) |
            ((u8) (c->g * 255)) << 8 |
            ((u8) (c->r * 255)) << 16;

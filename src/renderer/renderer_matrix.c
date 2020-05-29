@@ -1,5 +1,5 @@
 
-inline mat4 mat4_identity(void) {
+mat4 mat4_identity(void) {
     return (mat4) {
         .m[0][0] = 1,
         .m[1][1] = 1,
@@ -63,6 +63,79 @@ mat4 mat4_transpose(mat4 *m) {
 }
 
 
+mat3 mat4_submatrix(mat4 *m, usize row, usize col) {
+    _ASSERT(row < MAT4_SIZE && col < MAT4_SIZE);
+
+    mat3  res     = { 0.0f };
+    usize sub_row = 0;
+    usize sub_col = 0;
+
+    for (usize row_ = 0; row_ < MAT4_SIZE; row_++) {
+        if (row_ == row) continue;
+
+        sub_col = 0;
+        for (usize col_ = 0; col_ < MAT4_SIZE; col_++) {
+            if (col_ == col) continue;
+
+            res.m[sub_row][sub_col++] = m->m[row_][col_];
+        }
+
+        sub_row += 1;
+    }
+
+    return res;
+}
+
+
+f32 mat4_minor(mat4 *m, usize row, usize col) {
+    _ASSERT(row < MAT4_SIZE && col < MAT4_SIZE);
+
+    mat3 subm  = mat4_submatrix(m, row, col);
+    f32  minor = mat3_determinant(&subm);
+
+    return minor;
+}
+
+
+f32 mat4_cofactor(mat4 *m, usize row, usize col) {
+    _ASSERT(row < MAT4_SIZE && col < MAT4_SIZE);
+
+    f32 minor = mat4_minor(m, row, col);
+
+    return ((row + col) % 2 == 0) ? minor : -minor;
+}
+
+
+f32 mat4_determinant(mat4 *m) {
+    f32 det = 0.0f;
+
+    for (usize col = 0; col < MAT4_SIZE; col++) {
+        det += m->m[0][col] * mat4_cofactor(m, 0, col);
+    }
+
+    return det;
+}
+
+
+bool mat4_is_invertible(mat4 *m) {
+    return !f32_compare(mat4_determinant(m), 0.0f);
+}
+
+
+mat4 mat4_inverse(mat4 *m) {
+    mat4 res = { 0.0f };
+    f32  det = mat4_determinant(m);
+
+    for (usize row = 0; row < MAT4_SIZE; row++) {
+        for (usize col = 0; col < MAT4_SIZE; col++) {
+            res.m[col][row] = mat4_cofactor(m, row, col) / det;
+        }
+    }
+
+    return res;
+}
+
+
 bool mat3_compare(mat3 *m1, mat3 *m2) {
     for (usize row = 0; row < MAT3_SIZE; row++) {
         for (usize col = 0; col < MAT3_SIZE; col++) {
@@ -82,23 +155,54 @@ bool mat3_compare(mat3 *m1, mat3 *m2) {
 mat2 mat3_submatrix(mat3 *m, usize row, usize col) {
     _ASSERT(row < MAT3_SIZE && col < MAT3_SIZE);
 
-    mat2  res = { 0.0f };
-    usize r   = 0;
-    usize c   = 0;
+    mat2  res     = { 0.0f };
+    usize sub_row = 0;
+    usize sub_col = 0;
 
     for (usize row_ = 0; row_ < MAT3_SIZE; row_++) {
         if (row_ == row) continue;
 
-        c = 0;
+        sub_col = 0;
         for (usize col_ = 0; col_ < MAT3_SIZE; col_++) {
             if (col_ == col) continue;
 
-            res.m[r][c++] = m->m[row_][col_];
+            res.m[sub_row][sub_col++] = m->m[row_][col_];
         }
-        r++;
+
+        sub_row += 1;
     }
 
     return res;
+}
+
+
+f32 mat3_minor(mat3 *m, usize row, usize col) {
+    _ASSERT(row < MAT3_SIZE && col < MAT3_SIZE);
+
+    mat2 subm  = mat3_submatrix(m, row, col);
+    f32  minor = mat2_determinant(&subm);
+
+    return minor;
+}
+
+
+f32 mat3_cofactor(mat3 *m, usize row, usize col) {
+    _ASSERT(row < MAT3_SIZE && col < MAT3_SIZE);
+
+    f32 minor = mat3_minor(m, row, col);
+
+    return ((row + col) % 2 == 0) ? minor : -minor;
+}
+
+
+f32 mat3_determinant(mat3 *m) {
+    f32 det = 0.0f;
+
+    for (usize col = 0; col < MAT3_SIZE; col++) {
+        det += m->m[0][col] * mat3_cofactor(m, 0, col);
+    }
+
+    return det;
 }
 
 

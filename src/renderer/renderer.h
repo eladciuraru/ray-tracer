@@ -23,36 +23,36 @@ typedef double f64;
 
 typedef char *cstring;
 
-extern inline bool f32_compare(f32 num, f32 other);
+bool f32_compare(f32 num, f32 other);
 
 
 // Vector/Point type
 typedef struct _vec4 { f32 x, y, z, w; } vec4;
 
-extern inline vec4 vec4_make_point   (f32 x, f32 y, f32 z);
-extern inline vec4 vec4_make_vector  (f32 x, f32 y, f32 z);
-extern inline bool vec4_is_point     (vec4 *v);
-extern inline bool vec4_is_vector    (vec4 *v);
-extern inline bool vec4_compare      (vec4 *v1, vec4 *v2);
-extern inline vec4 vec4_add          (vec4 *v1, vec4 *v2);
-extern inline vec4 vec4_sub          (vec4 *v1, vec4 *v2);
-extern inline vec4 vec4_negate       (vec4 *v);
-extern inline vec4 vec4_scalar_mul   (vec4 *v, f32 scalar);
-extern inline vec4 vec4_scalar_div   (vec4 *v, f32 scalar);
-extern inline f32  vec4_magnitude    (vec4 *v);
-extern inline vec4 vec4_normalize    (vec4 *v);
-extern inline f32  vec4_dot_product  (vec4 *v1, vec4 *v2);
-extern inline vec4 vec4_cross_product(vec4 *v1, vec4 *v2);
+vec4 vec4_make_point   (f32 x, f32 y, f32 z);
+vec4 vec4_make_vector  (f32 x, f32 y, f32 z);
+bool vec4_is_point     (vec4 *v);
+bool vec4_is_vector    (vec4 *v);
+bool vec4_compare      (vec4 *v1, vec4 *v2);
+vec4 vec4_add          (vec4 *v1, vec4 *v2);
+vec4 vec4_sub          (vec4 *v1, vec4 *v2);
+vec4 vec4_negate       (vec4 *v);
+vec4 vec4_scalar_mul   (vec4 *v, f32 scalar);
+vec4 vec4_scalar_div   (vec4 *v, f32 scalar);
+f32  vec4_magnitude    (vec4 *v);
+vec4 vec4_normalize    (vec4 *v);
+f32  vec4_dot_product  (vec4 *v1, vec4 *v2);
+vec4 vec4_cross_product(vec4 *v1, vec4 *v2);
 
 
 // Color type
 typedef struct _color3 { f32 r, g, b; } color3;
 
-extern inline bool   color3_compare   (color3 *c1, color3 *c2);
-extern inline color3 color3_add       (color3 *c1, color3 *c2);
-extern inline color3 color3_sub       (color3 *c1, color3 *c2);
-extern inline color3 color3_scalar_mul(color3 *c,  f32 scalar);
-extern inline color3 color3_mul       (color3 *c1, color3 *c2);
+bool   color3_compare   (color3 *c1, color3 *c2);
+color3 color3_add       (color3 *c1, color3 *c2);
+color3 color3_sub       (color3 *c1, color3 *c2);
+color3 color3_scalar_mul(color3 *c,  f32 scalar);
+color3 color3_mul       (color3 *c1, color3 *c2);
 
 
 // Canvas type
@@ -96,10 +96,10 @@ typedef struct _bitmap {
 #define BITMAP_BPP              sizeof(u32) * 8
 #define BITMAP_PIX_OFFSET       offsetof(bitmap, pixels)
 
-extern        canvas  canvas_create   (u32 width, u32 height);
-extern inline void    canvas_set_pixel(canvas *can, u32 x, u32 y, color3 *color);
-extern inline color3 *canvas_get_pixel(canvas *can, u32 x, u32 y);
-extern        bitmap *canvas_as_bitmap(canvas *can);
+canvas  canvas_create   (u32 width, u32 height);
+void    canvas_set_pixel(canvas *can, u32 x, u32 y, color3 *color);
+color3 *canvas_get_pixel(canvas *can, u32 x, u32 y);
+bitmap *canvas_as_bitmap(canvas *can);
 
 
 // Matrix type
@@ -119,16 +119,21 @@ typedef struct _mat2 {
     f32 m[MAT2_SIZE][MAT2_SIZE];
 } mat2;
 
-extern bool mat4_compare(mat4 *m1, mat4 *m2);
-extern bool mat3_compare(mat3 *m1, mat3 *m2);
-extern bool mat2_compare(mat2 *m1, mat2 *m2);
-
-extern inline mat4 mat4_identity   (void);
-extern        bool mat4_compare    (mat4 *m1, mat4 *m2);
-extern        mat4 mat4_mul        (mat4 *m1, mat4 *m2);
-extern        vec4 mat4_mul_vec4   (mat4 *m, vec4 *v);
-extern        mat4 mat4_transpose  (mat4 *m);
-extern        bool mat3_compare    (mat3 *m1, mat3 *m2);
-extern        mat2 mat3_submatrix  (mat3 *m, usize row, usize col);
-extern        bool mat2_compare    (mat2 *m1, mat2 *m2);
-extern        f32  mat2_determinant(mat2 *m);
+mat4 mat4_identity     (void);
+bool mat4_compare      (mat4 *m1, mat4 *m2);
+mat4 mat4_mul          (mat4 *m1, mat4 *m2);
+vec4 mat4_mul_vec4     (mat4 *m, vec4 *v);
+mat4 mat4_transpose    (mat4 *m);
+mat3 mat4_submatrix    (mat4 *m, usize row, usize col);
+f32  mat4_minor        (mat4 *m, usize row, usize col);
+f32  mat4_cofactor     (mat4 *m, usize row, usize col);
+f32  mat4_determinant  (mat4 *m);
+bool mat4_is_invertible(mat4 *m);
+mat4 mat4_inverse      (mat4 *m);
+bool mat3_compare      (mat3 *m1, mat3 *m2);
+mat2 mat3_submatrix    (mat3 *m, usize row, usize col);
+f32  mat3_minor        (mat3 *m, usize row, usize col);
+f32  mat3_cofactor     (mat3 *m, usize row, usize col);
+f32  mat3_determinant  (mat3 *m);
+bool mat2_compare      (mat2 *m1, mat2 *m2);
+f32  mat2_determinant  (mat2 *m);
