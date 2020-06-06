@@ -1,5 +1,8 @@
 #include "renderer\renderer.h"
 
+// Remove this eventually
+#include <math.h>
+
 #include "renderer\renderer_utils.c"
 #include "renderer\renderer_vector.c"
 #include "renderer\renderer_color.c"

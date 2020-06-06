@@ -13,7 +13,7 @@ environment env = {
     .wind    = vec4_make_vector(-0.01f, 0.0f, 0.0f),
 };
 
-canvas can = canvas_create(900, 550);
+canvas *can = canvas_create(900, 550);
 ```
 
 # Output 2
@@ -31,8 +31,8 @@ environment env = {
     .wind    = vec4_make_vector(-0.01f, 0.0f, 0.0f),
 };
 
-canvas can = canvas_create(900, 550);
-color3 col = { 0.75f, 0.25f, 0.25f };
+canvas *can = canvas_create(900, 550);
+color3  col = { 0.75f, 0.25f, 0.25f };
 ```
 
 # Output 3
@@ -50,8 +50,8 @@ environment env = {
     .wind    = vec4_make_vector(-0.01f, 0.0f, 0.0f),
 };
 
-canvas can = canvas_create(1000, 550);
-color3 col = { 0.75f, 0.25f, 0.25f };
+canvas *can = canvas_create(1000, 550);
+color3  col = { 0.75f, 0.25f, 0.25f };
 ```
 
 # Output 4
@@ -69,6 +69,6 @@ environment env = {
     .wind    = vec4_make_vector(-0.01f, 0.0f, 0.0f),
 };
 
-canvas can = canvas_create(250, 800);
-color3 col = { 0.75f, 0.25f, 0.25f };
+canvas *can = canvas_create(250, 800);
+color3  col = { 0.75f, 0.25f, 0.25f };
 ```

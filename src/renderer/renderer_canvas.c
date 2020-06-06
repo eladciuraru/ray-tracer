@@ -1,11 +1,11 @@
 
-canvas canvas_create(u32 width, u32 height) {
-    canvas can = {
-        .width  = width,
-        .height = height,
-        .length = width * height,
-    };
-    can.pixels = (color3 *) _allocate_buffer(can.length * sizeof(color3));
+canvas *canvas_create(u32 width, u32 height) {
+    u32     len = width * height;
+    canvas *can = (canvas *) _allocate_buffer(sizeof(canvas) +
+                                              len * sizeof(color3));
+    can->width  = width;
+    can->height = height;
+    can->length = len;
 
     return can;
 }
@@ -24,6 +24,11 @@ color3 *canvas_get_pixel(canvas *can, u32 x, u32 y) {
     _ASSERT(0 <= index && index < can->length);
 
     return &can->pixels[index];
+}
+
+
+canvas *canvas_delete(canvas *can) {
+    return _deallocate(can);
 }
 
 
@@ -52,4 +57,9 @@ bitmap *canvas_as_bitmap(canvas *can) {
     }
 
     return bmp;
+}
+
+
+bitmap *canvas_bitmap_delete(bitmap *bmp) {
+    return _deallocate(bmp);
 }

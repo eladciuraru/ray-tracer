@@ -57,10 +57,10 @@ color3 color3_mul       (color3 *c1, color3 *c2);
 
 // Canvas type
 typedef struct _canvas {
-    u32     width;
-    u32     height;
-    u32     length;
-    color3 *pixels;
+    u32    width;
+    u32    height;
+    u32    length;
+    color3 pixels[];
 } canvas;
 
 #pragma pack(push, 1)
@@ -96,10 +96,12 @@ typedef struct _bitmap {
 #define BITMAP_BPP              sizeof(u32) * 8
 #define BITMAP_PIX_OFFSET       offsetof(bitmap, pixels)
 
-canvas  canvas_create   (u32 width, u32 height);
-void    canvas_set_pixel(canvas *can, u32 x, u32 y, color3 *color);
-color3 *canvas_get_pixel(canvas *can, u32 x, u32 y);
-bitmap *canvas_as_bitmap(canvas *can);
+canvas *canvas_create       (u32 width, u32 height);
+void    canvas_set_pixel    (canvas *can, u32 x, u32 y, color3 *color);
+color3 *canvas_get_pixel    (canvas *can, u32 x, u32 y);
+canvas *canvas_delete       (canvas *can);
+bitmap *canvas_as_bitmap    (canvas *can);
+bitmap *canvas_bitmap_delete(bitmap *bmp);
 
 
 // Matrix type
@@ -137,3 +139,14 @@ f32  mat3_cofactor     (mat3 *m, usize row, usize col);
 f32  mat3_determinant  (mat3 *m);
 bool mat2_compare      (mat2 *m1, mat2 *m2);
 f32  mat2_determinant  (mat2 *m);
+
+
+// Transformation operations
+#define mat4_new_transform      mat4_identity
+
+mat4 mat4_translate(mat4 *m, f32 x, f32 y, f32 z);
+mat4 mat4_scale    (mat4 *m, f32 x, f32 y, f32 z);
+mat4 mat4_rotate_x (mat4 *m, f32 radians);
+mat4 mat4_rotate_y (mat4 *m, f32 radians);
+mat4 mat4_rotate_z (mat4 *m, f32 radians);
+mat4 mat4_shearing (mat4 *m, f32 xy, f32 xz, f32 yx, f32 yz, f32 zx, f32 zy);

@@ -136,6 +136,82 @@ mat4 mat4_inverse(mat4 *m) {
 }
 
 
+mat4 mat4_translate(mat4 *m, f32 x, f32 y, f32 z) {
+    mat4 translate = mat4_identity();
+    translate.m[0][3] = x;
+    translate.m[1][3] = y;
+    translate.m[2][3] = z;
+
+    return mat4_mul(&translate, m);
+}
+
+
+mat4 mat4_scale(mat4 *m, f32 x, f32 y, f32 z) {
+    mat4 scale = mat4_identity();
+    scale.m[0][0] = x;
+    scale.m[1][1] = y;
+    scale.m[2][2] = z;
+
+    return mat4_mul(&scale, m);
+}
+
+
+mat4 mat4_rotate_x(mat4 *m, f32 radians) {
+    mat4 rotate_x = mat4_identity();
+    f32  sinrad   = sinf(radians);
+    f32  cosrad   = cosf(radians);
+
+    rotate_x.m[1][1] =  cosrad;
+    rotate_x.m[1][2] = -sinrad;
+    rotate_x.m[2][1] =  sinrad;
+    rotate_x.m[2][2] =  cosrad;
+
+    return mat4_mul(&rotate_x, m);
+}
+
+
+mat4 mat4_rotate_y(mat4 *m, f32 radians) {
+    mat4 rotate_y = mat4_identity();
+    f32  sinrad   = sinf(radians);
+    f32  cosrad   = cosf(radians);
+
+    rotate_y.m[0][0] =  cosrad;
+    rotate_y.m[0][2] =  sinrad;
+    rotate_y.m[2][0] = -sinrad;
+    rotate_y.m[2][2] =  cosrad;
+
+    return mat4_mul(&rotate_y, m);
+}
+
+
+mat4 mat4_rotate_z(mat4 *m, f32 radians) {
+    mat4 rotate_z = mat4_identity();
+    f32  sinrad   = sinf(radians);
+    f32  cosrad   = cosf(radians);
+
+    rotate_z.m[0][0] =  cosrad;
+    rotate_z.m[0][1] = -sinrad;
+    rotate_z.m[1][0] =  sinrad;
+    rotate_z.m[1][1] =  cosrad;
+
+    return mat4_mul(&rotate_z, m);
+}
+
+
+mat4 mat4_shearing(mat4 *m, f32 xy, f32 xz, f32 yx, f32 yz, f32 zx, f32 zy) {
+    mat4 shearing = mat4_identity();
+
+    shearing.m[0][1] = xy;
+    shearing.m[0][2] = xz;
+    shearing.m[1][0] = yx;
+    shearing.m[1][2] = yz;
+    shearing.m[2][0] = zx;
+    shearing.m[2][1] = zy;
+
+    return mat4_mul(&shearing, m);
+}
+
+
 bool mat3_compare(mat3 *m1, mat3 *m2) {
     for (usize row = 0; row < MAT3_SIZE; row++) {
         for (usize col = 0; col < MAT3_SIZE; col++) {
