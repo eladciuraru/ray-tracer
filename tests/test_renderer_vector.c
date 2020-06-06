@@ -1,12 +1,3 @@
-// Temporary unit test file
-// TODO: Create minimal unit test API
-#include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
-#include <math.h>
-
-#include "renderer/renderer.h"
-
 
 void test_points_and_vectors(void) {
     vec4 p = vec4_make_point (4.3f, -4.2f, 3.1f);
@@ -187,7 +178,7 @@ void test_cross_product_vector(void) {
 }
 
 
-int main(void) {
+void test_suite_vector(void) {
     printf("Running tests for renderer_vector.c\n");
 
     test_points_and_vectors();
@@ -202,6 +193,4 @@ int main(void) {
     test_cross_product_vector();
 
     printf("Succesfully ran all tests\n");
-
-    return EXIT_SUCCESS;
 }

@@ -31,9 +31,7 @@ echo [*] Building Renderer Code
 
 echo.
 echo [*] Building Tests
-for %%n in ("%TestsDir%\*") do (
-    %CC% %CommonCompilerFlags% "%%n" %CommonLinkerFlags%
-)
+%CC% %CommonCompilerFlags% "%TestsDir%\tests.c" %CommonLinkerFlags%
 
 echo.
 echo [*] Building answers

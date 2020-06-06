@@ -26,7 +26,18 @@ answer_func answers[] = {
 
 
 int main(int argc, char **argv) {
-    answer_chapter4();
+    if (argc != 2) {
+        printf("Usage: %s chapter\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    i32 chapter = atoi(argv[1]);
+    if (chapter < 1 || chapter >= _countof(answers)) {
+        printf("%d is invalid chapter number\n", chapter);
+        return EXIT_FAILURE;
+    }
+
+    answers[chapter]();
 
     return EXIT_SUCCESS;
 }

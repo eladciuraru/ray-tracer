@@ -1,10 +1,3 @@
-// TODO: Change the tests later
-#include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
-
-#include "renderer/renderer.h"
-
 
 void test_add_colors(void) {
     color3 c1  = { 0.9f, 0.6f, 0.75f };
@@ -46,7 +39,7 @@ void test_hadamard_product_color(void) {
 }
 
 
-int main(void) {
+void test_suite_color(void) {
     printf("Running tests for renderer_color.c\n");
 
     test_add_colors();
@@ -55,6 +48,4 @@ int main(void) {
     test_hadamard_product_color();
 
     printf("Succesfully ran all tests\n");
-
-    return EXIT_SUCCESS;
 }

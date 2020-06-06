@@ -1,14 +1,3 @@
-// Why?
-#define _USE_MATH_DEFINES
-#include <math.h>
-
-// TODO: Change the tests later
-#include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
-
-#include "renderer/renderer.h"
-
 
 void test_translate_transform(void) {
     mat4 tran = mat4_new_transform();
@@ -185,7 +174,7 @@ void test_chaining_transforms(void) {
 }
 
 
-int main(void) {
+void test_suite_transform(void) {
     printf("Running tests for renderer_transform.c\n");
 
     test_translate_transform();
@@ -202,6 +191,4 @@ int main(void) {
     test_chaining_transforms();
 
     printf("Succesfully ran all tests\n");
-
-    return EXIT_SUCCESS;
 }

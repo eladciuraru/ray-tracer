@@ -1,10 +1,3 @@
-// TODO: Change the tests later
-#include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
-
-#include "renderer/renderer.h"
-
 
 void test_canvas_init(void) {
     canvas *can   = canvas_create(10, 20);
@@ -47,7 +40,7 @@ void test_bitmap(void) {
 }
 
 
-int main(void) {
+void test_suite_canvas(void) {
     printf("Running tests for renderer_canvas.c\n");
 
     test_canvas_init();
@@ -55,6 +48,4 @@ int main(void) {
     test_bitmap();
 
     printf("Succesfully ran all tests\n");
-
-    return EXIT_SUCCESS;
 }

@@ -1,10 +1,3 @@
-// TODO: Change the tests later
-#include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
-
-#include "renderer/renderer.h"
-
 
 void test_create_matrix4(void) {
     struct { u32 row, col; f32 value; } tests[] = {
@@ -367,7 +360,7 @@ void test_inverse_matrix4_2(void) {
 }
 
 
-int main(void) {
+void test_suite_matrix(void) {
     printf("Running tests for renderer_matrix.c\n");
 
     test_create_matrix4();
@@ -389,6 +382,4 @@ int main(void) {
     test_inverse_matrix4_2();
 
     printf("Succesfully ran all tests\n");
-
-    return EXIT_SUCCESS;
 }
