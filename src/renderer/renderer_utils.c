@@ -1,5 +1,7 @@
 
+// TODO: Remove these
 #include <assert.h>
+#include <stdlib.h>
 
 #ifndef _RELEASE
     #define _ASSERT(condition) assert(condition)
@@ -8,8 +10,6 @@
 #endif
 
 
-// TODO: Remove this
-#include <stdlib.h>
 // This function exists to be able to easily swap calling malloc for memory allocation
 static void *_allocate_buffer_no_zero(usize size) {
     void *addr = malloc(size);

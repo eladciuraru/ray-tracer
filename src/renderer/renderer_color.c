@@ -1,4 +1,12 @@
 
+color3 color3_new(f32 r, f32 g, f32 b) {
+    return (color3) {
+        .r = r,
+        .g = g,
+        .b = b,
+    };
+}
+
 bool color3_compare(color3 *c1, color3 *c2) {
     return f32_compare(c1->r, c2->r) &&
            f32_compare(c1->g, c2->g) &&

@@ -6,7 +6,7 @@ set "BuildDir=%ParentDir%\build"
 set "SourceDir=%ParentDir%\src"
 set "TestsDir=%ParentDir%\tests"
 
-set "WarningsFlags=/W4 /WX /wd4204 /wd4101 /wd4100 /wd4200"
+set "WarningsFlags=/W4 /WX /wd4204 /wd4101 /wd4100 /wd4200 /wd4201"
 set "CommonCompilerFlags=/Z7 /Oi /MT /TC /nologo /I^"%SourceDir%^" ^
                          %WarningsFlags% /D_CRT_SECURE_NO_WARNINGS=1"
 set "CommonLinkerFlags=/link renderer.obj"
@@ -26,6 +26,7 @@ if not exist "%BuildDir%" (
 
 pushd %BuildDir%
 
+echo .
 echo [*] Building Renderer Code
 %CC% %CommonCompilerFlags% /c "%SourceDir%\renderer\renderer.c"
 

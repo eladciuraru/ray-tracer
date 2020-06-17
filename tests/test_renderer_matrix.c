@@ -214,9 +214,9 @@ void test_cofactor_matrix3(void) {
     };
 
     for (usize i = 0; i < _countof(tests); i++) {
-        usize row = tests[i].row;
-        usize col = tests[i].col;
-        f32   cof = tests[i].cofactor;
+        u32 row = tests[i].row;
+        u32 col = tests[i].col;
+        f32 cof = tests[i].cofactor;
 
         f32 res = mat3_cofactor(&mat, row, col);
         assert(f32_compare(res, cof) == true);

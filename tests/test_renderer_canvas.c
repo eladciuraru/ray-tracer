@@ -8,6 +8,8 @@ void test_canvas_init(void) {
 
         assert(color3_compare(c, &black) == true);
     }
+
+    can = canvas_delete(can);
 }
 
 
@@ -18,6 +20,8 @@ void test_canvas_operations(void) {
 
     color3 *res = canvas_get_pixel(can, 2, 3);
     assert(color3_compare(res, &red) == true);
+
+    can = canvas_delete(can);
 }
 
 
@@ -37,6 +41,9 @@ void test_bitmap(void) {
         pixel_flag &= bmp->pixels[i] == pixel;
     }
     assert(pixel_flag == true);
+
+    can = canvas_delete(can);
+    bmp = canvas_bitmap_delete(bmp);
 }
 
 
