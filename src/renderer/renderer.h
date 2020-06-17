@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <float.h>
 #include <stdbool.h>
 
 
@@ -48,11 +49,13 @@ vec4 vec4_cross_product(vec4 *v1, vec4 *v2);
 // Color type
 typedef struct _color3 { f32 r, g, b; } color3;
 
+color3 color3_new       (f32 r, f32 g, f32 b);
 bool   color3_compare   (color3 *c1, color3 *c2);
 color3 color3_add       (color3 *c1, color3 *c2);
 color3 color3_sub       (color3 *c1, color3 *c2);
 color3 color3_scalar_mul(color3 *c,  f32 scalar);
 color3 color3_mul       (color3 *c1, color3 *c2);
+u32    color3_as_u32    (color3 *c);
 
 
 // Canvas type
@@ -126,16 +129,16 @@ bool mat4_compare      (mat4 *m1, mat4 *m2);
 mat4 mat4_mul          (mat4 *m1, mat4 *m2);
 vec4 mat4_mul_vec4     (mat4 *m, vec4 *v);
 mat4 mat4_transpose    (mat4 *m);
-mat3 mat4_submatrix    (mat4 *m, usize row, usize col);
-f32  mat4_minor        (mat4 *m, usize row, usize col);
-f32  mat4_cofactor     (mat4 *m, usize row, usize col);
+mat3 mat4_submatrix    (mat4 *m, u32 row, u32 col);
+f32  mat4_minor        (mat4 *m, u32 row, u32 col);
+f32  mat4_cofactor     (mat4 *m, u32 row, u32 col);
 f32  mat4_determinant  (mat4 *m);
 bool mat4_is_invertible(mat4 *m);
 mat4 mat4_inverse      (mat4 *m);
 bool mat3_compare      (mat3 *m1, mat3 *m2);
-mat2 mat3_submatrix    (mat3 *m, usize row, usize col);
-f32  mat3_minor        (mat3 *m, usize row, usize col);
-f32  mat3_cofactor     (mat3 *m, usize row, usize col);
+mat2 mat3_submatrix    (mat3 *m, u32 row, u32 col);
+f32  mat3_minor        (mat3 *m, u32 row, u32 col);
+f32  mat3_cofactor     (mat3 *m, u32 row, u32 col);
 f32  mat3_determinant  (mat3 *m);
 bool mat2_compare      (mat2 *m1, mat2 *m2);
 f32  mat2_determinant  (mat2 *m);
@@ -150,3 +153,47 @@ mat4 mat4_rotate_x (mat4 *m, f32 radians);
 mat4 mat4_rotate_y (mat4 *m, f32 radians);
 mat4 mat4_rotate_z (mat4 *m, f32 radians);
 mat4 mat4_shearing (mat4 *m, f32 xy, f32 xz, f32 yx, f32 yz, f32 zx, f32 zy);
+
+
+// Ray type
+typedef struct _ray {
+    vec4 origin;
+    vec4 direction;
+} ray;
+
+ray  ray_new      (vec4 origin, vec4 direction);
+vec4 ray_position (ray *r, f32 time);
+ray  ray_transform(ray *r, mat4 *transform);
+
+// Sphere type
+typedef struct _sphere {
+    mat4 transform;
+} sphere;
+
+sphere sphere_new(void);
+
+
+// Intersect type
+typedef struct _intersect_list {
+    sphere *s;
+    u32    count;
+    f32    values[];
+} intersect_list;
+
+#define INTERSECT_NO_HIT        ((u32) - 1)
+
+#define intersect_list_init(name, sphere, ...) \
+    do { \
+        f32 values[] = {__VA_ARGS__}; \
+        name         = intersect_list_new(sphere, _countof(values), values); \
+    } while (false);
+
+#define intersect_list_init_empty(name, sphere) \
+    do { \
+        name = intersect_list_new(sphere, 0, NULL); \
+    } while (false);
+
+intersect_list *sphere_intersect     (sphere *s, ray *r);
+intersect_list *intersect_list_new   (sphere *s, u32 count, f32 values[]);
+intersect_list *intersect_list_delete(intersect_list *list);
+u32             intersect_list_hit   (intersect_list *list);
