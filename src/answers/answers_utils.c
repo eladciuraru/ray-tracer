@@ -12,9 +12,9 @@ static void write_canvas(canvas *can, cstring filename) {
 }
 
 
-static void print_vec4(vec4 *vec) {
+static void print_vec4(vec4 v) {
     printf("{ %.3f, %.3f, %.3f, %.3f }",
-           vec->x, vec->y, vec->z, vec->w);
+           v.x, v.y, v.z, v.w);
 }
 
 

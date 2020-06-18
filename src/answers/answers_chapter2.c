@@ -1,8 +1,8 @@
 
 static void answer_chapter2(void) {
     vec4 velocity = vec4_make_vector(1.0f, 5.0f, 0.0f);
-    velocity      = vec4_normalize(&velocity);
-    velocity      = vec4_scalar_mul(&velocity, 10.0f);
+    velocity      = vec4_normalize(velocity);
+    velocity      = vec4_scalar_mul(velocity, 10.0f);
 
     projectile proj = {
         .position = vec4_make_point(0.0f, 250.0f, 0.0f),

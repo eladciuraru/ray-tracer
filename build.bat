@@ -26,7 +26,7 @@ if not exist "%BuildDir%" (
 
 pushd %BuildDir%
 
-echo .
+echo.
 echo [*] Building Renderer Code
 %CC% %CommonCompilerFlags% /c "%SourceDir%\renderer\renderer.c"
 

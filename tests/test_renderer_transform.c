@@ -6,7 +6,7 @@ void test_translate_transform(void) {
 
     vec4 src = vec4_make_point(-3.0f, 4.0f, 5.0f);
     vec4 res = mat4_mul_vec4(&tran, &src);
-    assert(vec4_compare(&res, &dest) == true);
+    assert(vec4_compare(res, dest) == true);
 }
 
 
@@ -18,7 +18,7 @@ void test_inverse_translate_transform(void) {
 
     vec4 src = vec4_make_point(-3.0f, 4.0f, 5.0f);
     vec4 res = mat4_mul_vec4(&tran, &src);
-    assert(vec4_compare(&res, &dest) == true);
+    assert(vec4_compare(res, dest) == true);
 }
 
 
@@ -28,7 +28,7 @@ void test_vector_translate_transform(void) {
     vec4 vec  = vec4_make_vector(-3.0f, 4.0f, 5.0f);
 
     vec4 res = mat4_mul_vec4(&tran, &vec);
-    assert(vec4_compare(&res, &vec) == true);
+    assert(vec4_compare(res, vec) == true);
 }
 
 
@@ -39,7 +39,7 @@ void test_scale_transform(void) {
 
     vec4 src = vec4_make_point(-4.0f, 6.0f, 8.0f);
     vec4 res = mat4_mul_vec4(&tran, &src);
-    assert(vec4_compare(&res, &dest) == true);
+    assert(vec4_compare(res, dest) == true);
 }
 
 
@@ -51,7 +51,7 @@ void test_inverse_scale_transform(void) {
 
     vec4 src = vec4_make_point(-4.0f, 6.0f, 8.0f);
     vec4 res = mat4_mul_vec4(&tran, &src);
-    assert(vec4_compare(&res, &dest) == true);
+    assert(vec4_compare(res, dest) == true);
 }
 
 
@@ -62,7 +62,7 @@ void test_vector_scale_transform(void) {
 
     vec4 v   = vec4_make_vector(-4.0f, 6.0f, 8.0f);
     vec4 res = mat4_mul_vec4(&tran, &v);
-    assert(vec4_compare(&res, &vec) == true);
+    assert(vec4_compare(res, vec) == true);
 }
 
 
@@ -78,10 +78,10 @@ void test_rotation_x_transform(void) {
 
     vec4 src = vec4_make_point(0.0f, 1.0f, 0.0f);
     vec4 res = mat4_mul_vec4(&tran_half, &src);
-    assert(vec4_compare(&res, &dest_half) == true);
+    assert(vec4_compare(res, dest_half) == true);
 
     res = mat4_mul_vec4(&tran_full, &src);
-    assert(vec4_compare(&res, &dest_full) == true);
+    assert(vec4_compare(res, dest_full) == true);
 }
 
 
@@ -94,7 +94,7 @@ void test_inverse_rotation_x_transform(void) {
 
     vec4 src = vec4_make_point(0.0f, 1.0f, 0.0f);
     vec4 res = mat4_mul_vec4(&tran_half, &src);
-    assert(vec4_compare(&res, &dest_half) == true);
+    assert(vec4_compare(res, dest_half) == true);
 }
 
 
@@ -110,10 +110,10 @@ void test_rotation_y_transform(void) {
 
     vec4 src = vec4_make_point(0.0f, 0.0f, 1.0f);
     vec4 res = mat4_mul_vec4(&tran_half, &src);
-    assert(vec4_compare(&res, &dest_half) == true);
+    assert(vec4_compare(res, dest_half) == true);
 
     res = mat4_mul_vec4(&tran_full, &src);
-    assert(vec4_compare(&res, &dest_full) == true);
+    assert(vec4_compare(res, dest_full) == true);
 }
 
 
@@ -129,10 +129,10 @@ void test_rotation_z_transform(void) {
 
     vec4 src = vec4_make_point(0.0f, 1.0f, 0.0f);
     vec4 res = mat4_mul_vec4(&tran_half, &src);
-    assert(vec4_compare(&res, &dest_half) == true);
+    assert(vec4_compare(res, dest_half) == true);
 
     res = mat4_mul_vec4(&tran_full, &src);
-    assert(vec4_compare(&res, &dest_full) == true);
+    assert(vec4_compare(res, dest_full) == true);
 }
 
 
@@ -149,14 +149,14 @@ void test_shearing_transform(void) {
 
     for (usize i = 0; i < _countof(tests); i++) {
         f32  *params = tests[i].params;
-        vec4 *dest   = &tests[i].dest;
+        vec4  dest   = tests[i].dest;
 
         mat4 tran = mat4_new_transform();
         tran      = mat4_shearing(&tran, params[0], params[1], params[2],
                                   params[3], params[4], params[5]);
 
         vec4 res = mat4_mul_vec4(&tran, &src);
-        assert(vec4_compare(&res, dest) == true);
+        assert(vec4_compare(res, dest) == true);
     }
 }
 
@@ -170,7 +170,7 @@ void test_chaining_transforms(void) {
 
     vec4 src = vec4_make_point(1.0f, 0.0f, 1.0f);
     vec4 res = mat4_mul_vec4(&tran, &src);
-    assert(vec4_compare(&res, &dest) == true);
+    assert(vec4_compare(res, dest) == true);
 }
 
 

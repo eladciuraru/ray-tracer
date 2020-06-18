@@ -49,6 +49,6 @@ static void answer_chapter3(void) {
     printf("Q4: Try changing any single element of the identity matrix "
            "to a different number and multiply it by a tuple, what happens?\n");
     printf("A4: iden[1][1] = 23 -> Y * 23 = ");
-    print_vec4(&res_vec);
+    print_vec4(res_vec);
     printf("\n");
 }

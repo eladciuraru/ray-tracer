@@ -106,7 +106,7 @@ void test_mul_matrix4_vec4(void) {
     vec4 mul = { 18.0f, 24.0f, 33.0f, 1.0f };
 
     vec4 res = mat4_mul_vec4(&mat, &vec);
-    assert(vec4_compare(&res, &mul) == true);
+    assert(vec4_compare(res, mul) == true);
 }
 
 

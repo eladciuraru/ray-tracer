@@ -1,7 +1,7 @@
 
 ray ray_new(vec4 origin, vec4 direction) {
-    _ASSERT(vec4_is_point(&origin) &&
-            vec4_is_vector(&direction));
+    _ASSERT(vec4_is_point(origin) &&
+            vec4_is_vector(direction));
 
     return (ray) {
         .origin    = origin,
@@ -11,9 +11,9 @@ ray ray_new(vec4 origin, vec4 direction) {
 
 
 vec4 ray_position(ray *r, f32 time) {
-    vec4 pos = vec4_scalar_mul(&r->direction, time);
+    vec4 pos = vec4_scalar_mul(r->direction, time);
 
-    return vec4_add(&r->origin, &pos);
+    return vec4_add(r->origin, pos);
 }
 
 

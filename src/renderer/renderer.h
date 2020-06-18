@@ -32,18 +32,18 @@ typedef struct _vec4 { f32 x, y, z, w; } vec4;
 
 vec4 vec4_make_point   (f32 x, f32 y, f32 z);
 vec4 vec4_make_vector  (f32 x, f32 y, f32 z);
-bool vec4_is_point     (vec4 *v);
-bool vec4_is_vector    (vec4 *v);
-bool vec4_compare      (vec4 *v1, vec4 *v2);
-vec4 vec4_add          (vec4 *v1, vec4 *v2);
-vec4 vec4_sub          (vec4 *v1, vec4 *v2);
-vec4 vec4_negate       (vec4 *v);
-vec4 vec4_scalar_mul   (vec4 *v, f32 scalar);
-vec4 vec4_scalar_div   (vec4 *v, f32 scalar);
-f32  vec4_magnitude    (vec4 *v);
-vec4 vec4_normalize    (vec4 *v);
-f32  vec4_dot_product  (vec4 *v1, vec4 *v2);
-vec4 vec4_cross_product(vec4 *v1, vec4 *v2);
+bool vec4_is_point     (vec4 v);
+bool vec4_is_vector    (vec4 v);
+bool vec4_compare      (vec4 v1, vec4 v2);
+vec4 vec4_add          (vec4 v1, vec4 v2);
+vec4 vec4_sub          (vec4 v1, vec4 v2);
+vec4 vec4_negate       (vec4 v);
+vec4 vec4_scalar_mul   (vec4 v, f32 scalar);
+vec4 vec4_scalar_div   (vec4 v, f32 scalar);
+f32  vec4_magnitude    (vec4 v);
+vec4 vec4_normalize    (vec4 v);
+f32  vec4_dot_product  (vec4 v1, vec4 v2);
+vec4 vec4_cross_product(vec4 v1, vec4 v2);
 
 
 // Color type
@@ -167,11 +167,12 @@ ray  ray_transform(ray *r, mat4 *transform);
 
 // Sphere type
 typedef struct _sphere {
+    vec4 origin;
     mat4 transform;
 } sphere;
 
 sphere sphere_new(void);
-
+vec4   sphere_normal_at(sphere *s, vec4 point);
 
 // Intersect type
 typedef struct _intersect_list {

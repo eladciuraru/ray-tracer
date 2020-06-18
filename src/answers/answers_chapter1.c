@@ -12,9 +12,8 @@ typedef struct _environment {
 
 
 static projectile tick(environment *env, projectile *proj) {
-    vec4 pos = vec4_add(&proj->position, &proj->velocity);
-    vec4 vel = vec4_add(&proj->velocity, &env->gravity);
-    vel = vec4_add(&vel, &env->wind);
+    vec4 pos = vec4_add(proj->position, proj->velocity);
+    vec4 vel = vec4_add(vec4_add(proj->velocity, env->gravity), env->wind);
 
     return (projectile) { pos, vel };
 }
@@ -25,8 +24,8 @@ static void answer_chapter1(void) {
         .position = vec4_make_point(0.0f, 1.0f, 0.0f),
         .velocity = vec4_make_vector(1.0f, 1.0f, 0.0f),
     };
-    proj.velocity = vec4_normalize(&proj.velocity);
-    proj.velocity = vec4_scalar_mul(&proj.velocity, 21.25f);
+    proj.velocity = vec4_normalize(proj.velocity);
+    proj.velocity = vec4_scalar_mul(proj.velocity, 21.25f);
 
     environment env = {
         .gravity = vec4_make_vector(0.0f, -0.5f, 0.0f),
