@@ -17,7 +17,7 @@ vec4 ray_position(ray *r, f32 time) {
 }
 
 
-ray ray_transform(ray *r, mat4 *transform) {
-    return ray_new(mat4_mul_vec4(transform, &r->origin),
-                   mat4_mul_vec4(transform, &r->direction));
+ray ray_transform(ray *r, mat4 transform) {
+    return ray_new(mat4_mul_vec4(transform, r->origin),
+                   mat4_mul_vec4(transform, r->direction));
 }

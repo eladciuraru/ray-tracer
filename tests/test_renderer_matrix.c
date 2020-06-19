@@ -90,8 +90,8 @@ void test_mul_matrix4(void) {
         16.0f, 26.0f,  46.0f,  42.0f,
     };
 
-    mat4 res = mat4_mul(&m1, &m2);
-    assert(mat4_compare(&res, &mul) == true);
+    mat4 res = mat4_mul(m1, m2);
+    assert(mat4_compare(res, mul) == true);
 }
 
 
@@ -105,7 +105,7 @@ void test_mul_matrix4_vec4(void) {
     vec4 vec = {  1.0f,  2.0f,  3.0f, 1.0f };
     vec4 mul = { 18.0f, 24.0f, 33.0f, 1.0f };
 
-    vec4 res = mat4_mul_vec4(&mat, &vec);
+    vec4 res = mat4_mul_vec4(mat, vec);
     assert(vec4_compare(res, mul) == true);
 }
 
@@ -119,8 +119,8 @@ void test_mul_matrix4_identity(void) {
     };
     mat4 iden = mat4_identity();
 
-    mat4 res = mat4_mul(&mat, &iden);
-    assert(mat4_compare(&res, &mat) == true);
+    mat4 res = mat4_mul(mat, iden);
+    assert(mat4_compare(res, mat) == true);
 }
 
 
@@ -138,8 +138,8 @@ void test_transpose_matrix4(void) {
         0.0f, 8.0f, 3.0f, 8.0f,
     };
 
-    mat4 res = mat4_transpose(&mat);
-    assert(mat4_compare(&res, &tran) == true);
+    mat4 res = mat4_transpose(mat);
+    assert(mat4_compare(res, tran) == true);
 }
 
 
@@ -150,7 +150,7 @@ void test_determinant_matrix2(void) {
     };
     f32 det  = 17.0f;
 
-    f32 res = mat2_determinant(&mat);
+    f32 res = mat2_determinant(mat);
     assert(f32_compare(res, det) == true);
 }
 
@@ -166,8 +166,8 @@ void test_submatrix_matrix3(void) {
          0.0f, 6.0f,
     };
 
-    mat2 res = mat3_submatrix(&mat, 0, 2);
-    assert(mat2_compare(&res, &subm) == true);
+    mat2 res = mat3_submatrix(mat, 0, 2);
+    assert(mat2_compare(res, subm) == true);
 }
 
 
@@ -184,8 +184,8 @@ void test_submatrix_matrix4(void) {
         -7.0f, -1.0f, 1.0f,
     };
 
-    mat3 res = mat4_submatrix(&mat, 2, 1);
-    assert(mat3_compare(&res, &subm) == true);
+    mat3 res = mat4_submatrix(mat, 2, 1);
+    assert(mat3_compare(res, subm) == true);
 }
 
 
@@ -197,7 +197,7 @@ void test_minor_matrix3(void) {
     };
     f32 minor = 25;
 
-    f32 res = mat3_minor(&mat, 1, 0);
+    f32 res = mat3_minor(mat, 1, 0);
     assert(f32_compare(res, minor) == true);
 }
 
@@ -218,7 +218,7 @@ void test_cofactor_matrix3(void) {
         u32 col = tests[i].col;
         f32 cof = tests[i].cofactor;
 
-        f32 res = mat3_cofactor(&mat, row, col);
+        f32 res = mat3_cofactor(mat, row, col);
         assert(f32_compare(res, cof) == true);
     }
 }
@@ -232,7 +232,7 @@ void test_determinant_matrix3(void) {
     };
     f32 det  = -196.0f;
 
-    f32 res = mat3_determinant(&mat);
+    f32 res = mat3_determinant(mat);
     assert(f32_compare(res, det) == true);
 }
 
@@ -246,7 +246,7 @@ void test_determinant_matrix4(void) {
     };
     f32 det  = -4071;
 
-    f32 res = mat4_determinant(&mat);
+    f32 res = mat4_determinant(mat);
     assert(f32_compare(res, det) == true);
 }
 
@@ -274,8 +274,8 @@ void test_is_invertible_matrix4(void) {
     };
 
     for (usize i = 0; i < _countof(tests); i++) {
-        mat4 *mat  = &tests[i].mat;
-        bool  flag = tests[i].flag;
+        mat4 mat  = tests[i].mat;
+        bool flag = tests[i].flag;
 
         bool res = mat4_is_invertible(mat);
         assert(res == flag);
@@ -330,11 +330,11 @@ void test_inverse_matrix4(void) {
     };
 
     for (usize i = 0; i < _countof(tests); i++) {
-        mat4 *mat = &tests[i].mat;
-        mat4 *inv = &tests[i].inv;
+        mat4 mat = tests[i].mat;
+        mat4 inv = tests[i].inv;
 
         mat4 res = mat4_inverse(mat);
-        assert(mat4_compare(&res, inv) == true);
+        assert(mat4_compare(res, inv) == true);
     }
 }
 
@@ -352,11 +352,10 @@ void test_inverse_matrix4_2(void) {
         7.0f,  0.0f, 5.0f, 4.0f,
         6.0f, -2.0f, 0.0f, 5.0f,
     };
-    mat4 m3  = mat4_mul(&m1, &m2);
+    mat4 m3  = mat4_mul(m1, m2);
 
-    mat4 res = mat4_inverse(&m2);
-    res      = mat4_mul(&m3, &res);
-    assert(mat4_compare(&res, &m1) == true);
+    mat4 res = mat4_mul(m3, mat4_inverse(m2));
+    assert(mat4_compare(res, m1) == true);
 }
 
 

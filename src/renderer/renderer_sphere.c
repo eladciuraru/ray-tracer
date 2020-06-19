@@ -42,8 +42,7 @@ u32 intersect_list_hit(intersect_list *list) {
 
 
 intersect_list *sphere_intersect(sphere *s, ray *r) {
-    mat4 inv_tran  = mat4_inverse(&s->transform);
-    ray  new_ray   = ray_transform(r, &inv_tran);
+    ray  new_ray   = ray_transform(r, mat4_inverse(s->transform));
     vec4 direction = vec4_sub(new_ray.origin, s->origin);
 
     f32 a            = vec4_dot_product(new_ray.direction, new_ray.direction);
@@ -70,13 +69,11 @@ intersect_list *sphere_intersect(sphere *s, ray *r) {
 vec4 sphere_normal_at(sphere *s, vec4 point) {
     assert(vec4_is_point(point));
 
-    mat4 tran_inv     = mat4_inverse(&s->transform);
-    vec4 object_point = mat4_mul_vec4(&tran_inv, &point);
-
-    mat4 tran_tran_inv = mat4_transpose(&tran_inv);
-    vec4 object_normal = vec4_sub(object_point, s->origin);
-    vec4 world_normal  = mat4_mul_vec4(&tran_tran_inv, &object_normal);
-    world_normal.w     = 0.0f;
+    mat4 tran_inv     = mat4_inverse(s->transform);
+    vec4 object_point = mat4_mul_vec4(tran_inv, point);
+    vec4 world_normal = mat4_mul_vec4(mat4_transpose(tran_inv),
+                                      vec4_sub(object_point, s->origin));
+    world_normal.w    = 0.0f;
 
     return vec4_normalize(world_normal);
 }

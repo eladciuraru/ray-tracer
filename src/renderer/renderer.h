@@ -134,34 +134,34 @@ typedef struct _mat2 {
 } mat2;
 
 mat4 mat4_identity     (void);
-bool mat4_compare      (mat4 *m1, mat4 *m2);
-mat4 mat4_mul          (mat4 *m1, mat4 *m2);
-vec4 mat4_mul_vec4     (mat4 *m, vec4 *v);
-mat4 mat4_transpose    (mat4 *m);
-mat3 mat4_submatrix    (mat4 *m, u32 row, u32 col);
-f32  mat4_minor        (mat4 *m, u32 row, u32 col);
-f32  mat4_cofactor     (mat4 *m, u32 row, u32 col);
-f32  mat4_determinant  (mat4 *m);
-bool mat4_is_invertible(mat4 *m);
-mat4 mat4_inverse      (mat4 *m);
-bool mat3_compare      (mat3 *m1, mat3 *m2);
-mat2 mat3_submatrix    (mat3 *m, u32 row, u32 col);
-f32  mat3_minor        (mat3 *m, u32 row, u32 col);
-f32  mat3_cofactor     (mat3 *m, u32 row, u32 col);
-f32  mat3_determinant  (mat3 *m);
-bool mat2_compare      (mat2 *m1, mat2 *m2);
-f32  mat2_determinant  (mat2 *m);
+bool mat4_compare      (mat4 m1, mat4 m2);
+mat4 mat4_mul          (mat4 m1, mat4 m2);
+vec4 mat4_mul_vec4     (mat4 m,  vec4 v);
+mat4 mat4_transpose    (mat4 m);
+mat3 mat4_submatrix    (mat4 m, u32 row, u32 col);
+f32  mat4_minor        (mat4 m, u32 row, u32 col);
+f32  mat4_cofactor     (mat4 m, u32 row, u32 col);
+f32  mat4_determinant  (mat4 m);
+bool mat4_is_invertible(mat4 m);
+mat4 mat4_inverse      (mat4 m);
+bool mat3_compare      (mat3 m1, mat3 m2);
+mat2 mat3_submatrix    (mat3 m,  u32 row, u32 col);
+f32  mat3_minor        (mat3 m,  u32 row, u32 col);
+f32  mat3_cofactor     (mat3 m,  u32 row, u32 col);
+f32  mat3_determinant  (mat3 m);
+bool mat2_compare      (mat2 m1, mat2 m2);
+f32  mat2_determinant  (mat2 m);
 
 
 // Transformation operations
 #define mat4_new_transform      mat4_identity
 
-mat4 mat4_translate(mat4 *m, f32 x, f32 y, f32 z);
-mat4 mat4_scale    (mat4 *m, f32 x, f32 y, f32 z);
-mat4 mat4_rotate_x (mat4 *m, f32 radians);
-mat4 mat4_rotate_y (mat4 *m, f32 radians);
-mat4 mat4_rotate_z (mat4 *m, f32 radians);
-mat4 mat4_shearing (mat4 *m, f32 xy, f32 xz, f32 yx, f32 yz, f32 zx, f32 zy);
+mat4 mat4_translate(mat4 m, f32 x, f32 y, f32 z);
+mat4 mat4_scale    (mat4 m, f32 x, f32 y, f32 z);
+mat4 mat4_rotate_x (mat4 m, f32 radians);
+mat4 mat4_rotate_y (mat4 m, f32 radians);
+mat4 mat4_rotate_z (mat4 m, f32 radians);
+mat4 mat4_shearing (mat4 m, f32 xy, f32 xz, f32 yx, f32 yz, f32 zx, f32 zy);
 
 
 // Ray type
@@ -172,7 +172,7 @@ typedef struct _ray {
 
 ray  ray_new      (vec4 origin, vec4 direction);
 vec4 ray_position (ray *r, f32 time);
-ray  ray_transform(ray *r, mat4 *transform);
+ray  ray_transform(ray *r, mat4 transform);
 
 // Sphere type
 typedef struct _sphere {

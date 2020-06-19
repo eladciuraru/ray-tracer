@@ -102,10 +102,9 @@ void test_ray_translate(void) {
                         vec4_make_vector(0.0f, 1.0f, 0.0f));
     ray r2    = ray_new(vec4_make_point (4.0f, 6.0f, 8.0f),
                         vec4_make_vector(0.0f, 1.0f, 0.0f));
-    mat4 tran = mat4_new_transform();
-    tran      = mat4_translate(&tran, 3.0f, 4.0, 5.0f);
+    mat4 tran = mat4_translate(mat4_new_transform(), 3.0f, 4.0, 5.0f);
 
-    ray res = ray_transform(&r, &tran);
+    ray res = ray_transform(&r, tran);
     assert(vec4_compare(res.origin,    r2.origin)    == true);
     assert(vec4_compare(res.direction, r2.direction) == true);
 }
@@ -116,10 +115,9 @@ void test_ray_scale(void) {
                         vec4_make_vector(0.0f, 1.0f, 0.0f));
     ray r2    = ray_new(vec4_make_point (2.0f, 6.0f, 12.0f),
                         vec4_make_vector(0.0f, 3.0f, 0.0f));
-    mat4 tran = mat4_new_transform();
-    tran      = mat4_scale(&tran, 2.0f, 3.0, 4.0f);
+    mat4 tran = mat4_scale(mat4_new_transform(), 2.0f, 3.0, 4.0f);
 
-    ray res = ray_transform(&r, &tran);
+    ray res = ray_transform(&r, tran);
     assert(vec4_compare(res.origin,    r2.origin)    == true);
     assert(vec4_compare(res.direction, r2.direction) == true);
 }
@@ -129,7 +127,7 @@ void test_sphere_scaled_intersection(void) {
     ray    r    = ray_new(vec4_make_point (0.0f, 0.0f, -5.0f),
                           vec4_make_vector(0.0f, 0.0f,  1.0f));
     sphere s    = sphere_new();
-    s.transform = mat4_scale(&s.transform, 2.0f, 2.0f, 2.0f);
+    s.transform = mat4_scale(s.transform, 2.0f, 2.0f, 2.0f);
 
     intersect_list *list = sphere_intersect(&s, &r);
     assert(list->count == 2);
@@ -144,7 +142,7 @@ void test_sphere_translated_intersection(void) {
     ray    r    = ray_new(vec4_make_point (0.0f, 0.0f, -5.0f),
                           vec4_make_vector(0.0f, 0.0f,  1.0f));
     sphere s    = sphere_new();
-    s.transform = mat4_translate(&s.transform, 5.0f, 0.0f, 0.0f);
+    s.transform = mat4_translate(s.transform, 5.0f, 0.0f, 0.0f);
 
     intersect_list *list = sphere_intersect(&s, &r);
     assert(list->count == 0);
@@ -197,7 +195,7 @@ void test_sphere_transform_normal_at(void) {
 
     // Test 1
     s           = sphere_new();
-    s.transform = mat4_translate(&s.transform, 0.0f, 1.0f, 0.0f);
+    s.transform = mat4_translate(s.transform, 0.0f, 1.0f, 0.0f);
     point       = vec4_make_point(0.0f, 1.70711f, -0.70711f);
     normal      = vec4_make_vector(0.0f, 0.70711f, -0.70711f);
     res         = sphere_normal_at(&s, point);
@@ -206,8 +204,8 @@ void test_sphere_transform_normal_at(void) {
     // Test 2
     s           = sphere_new();
     s.transform = mat4_new_transform();
-    s.transform = mat4_rotate_z(&s.transform, (f32) M_PI / 5.0f);
-    s.transform = mat4_scale   (&s.transform, 1.0f, 0.5f, 1.0f);
+    s.transform = mat4_rotate_z(s.transform, (f32) M_PI / 5.0f);
+    s.transform = mat4_scale   (s.transform, 1.0f, 0.5f, 1.0f);
     f32 sqrt2_2 = sqrtf(2.0f) / 2.0f;
     point       = vec4_make_point(0.0f, sqrt2_2, -sqrt2_2);
     normal      = vec4_make_vector(0.0f, 0.97014f, -0.24254f);

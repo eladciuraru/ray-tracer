@@ -18,13 +18,13 @@ static void print_vec4(vec4 v) {
 }
 
 
-static void print_mat4(mat4 *mat) {
+static void print_mat4(mat4 mat) {
     printf("{\n");
     for (usize row = 0; row < MAT4_SIZE; row++) {
         printf("\t");
 
         for (usize col = 0; col < MAT4_SIZE; col++) {
-            printf("%.3f, ", mat->m[row][col]);
+            printf("%.3f, ", mat.m[row][col]);
         }
 
         printf("\n");
