@@ -11,19 +11,19 @@ canvas *canvas_create(u32 width, u32 height) {
 }
 
 
-void canvas_set_pixel(canvas *can, u32 x, u32 y, color3 *color) {
+void canvas_set_pixel(canvas *can, u32 x, u32 y, color3 color) {
     u32 index = y * can->width + x;
     _ASSERT(0 <= index && index < can->length);
 
-    can->pixels[index] = *color;
+    can->pixels[index] = color;
 }
 
 
-color3 *canvas_get_pixel(canvas *can, u32 x, u32 y) {
+color3 canvas_get_pixel(canvas *can, u32 x, u32 y) {
     u32 index = y * can->width + x;
     _ASSERT(0 <= index && index < can->length);
 
-    return &can->pixels[index];
+    return can->pixels[index];
 }
 
 
@@ -53,7 +53,7 @@ bitmap *canvas_as_bitmap(canvas *can) {
     };
 
     for (usize i = 0; i < can->length; i++) {
-        bmp->pixels[i] = color3_as_u32(&can->pixels[i]);
+        bmp->pixels[i] = color3_as_u32(can->pixels[i]);
     }
 
     return bmp;

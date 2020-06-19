@@ -8,7 +8,6 @@ static void answer_chapter5(void) {
     const f32 WALL_Z_POS     = 10.0f;
 
     canvas *can = canvas_create(CANVAS_PIXELS, CANVAS_PIXELS);
-    color3  red = color3_new(1.0f, 0.0f, 0.0f);
 
     vec4    ray_origin = vec4_make_point(0.0f, 0.0f, -5.0f);
     sphere  s          = sphere_new();
@@ -30,7 +29,7 @@ static void answer_chapter5(void) {
             intersect_list *list = sphere_intersect(&s, &r);
             u32             hit  = intersect_list_hit(list);
             if (hit != INTERSECT_NO_HIT) {
-                canvas_set_pixel(can, col, row, &red);
+                canvas_set_pixel(can, col, row, COLOR3_RED);
             }
 
             list = intersect_list_delete(list);

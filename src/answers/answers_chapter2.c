@@ -20,7 +20,7 @@ static void answer_chapter2(void) {
 
         u32 x = (u32) roundf(pos.x);
         u32 y = (u32) roundf(can->height - 1 - pos.y);
-        canvas_set_pixel(can, x, y, &col);
+        canvas_set_pixel(can, x, y, col);
 
         proj = tick(&env, &proj);
     }

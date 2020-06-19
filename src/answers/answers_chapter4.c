@@ -1,5 +1,5 @@
 
-static void set_pixel_scaled(canvas *can, vec4 *point, color3 *color, u32 scale) {
+static void set_pixel_scaled(canvas *can, vec4 point, color3 color, u32 scale) {
     for (u32 height = 0; height < scale; height++) {
         for (u32 width = 0; width < scale; width++) {
             u32 x = (u32) point->x + width;
@@ -16,7 +16,7 @@ static void answer_chapter4(void) {
     const u32 SCALE_SIZE    = 5;
 
     canvas *can    = canvas_create(500, 500);
-    color3  color  = { 1.0f, 0.25f, 0.75f };
+    color3  color  = color3_new(1.0f, 0.25f, 0.75f);
     vec4    middle = vec4_make_point(can->width / 2.0f,
                                      can->height / 2.0f,
                                      0.0f);
@@ -31,7 +31,7 @@ static void answer_chapter4(void) {
 
         vec4 point = vec4_make_point(0.0f, 1.0f, 0.0f);
         point      = mat4_mul_vec4(&tran, &point);
-        set_pixel_scaled(can, &point, &color, SCALE_SIZE);
+        set_pixel_scaled(can, point, color, SCALE_SIZE);
     }
 
     write_canvas(can, "answers_output\\chapter4\\clock.bmp");

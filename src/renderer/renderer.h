@@ -49,13 +49,22 @@ vec4 vec4_cross_product(vec4 v1, vec4 v2);
 // Color type
 typedef struct _color3 { f32 r, g, b; } color3;
 
+#define COLOR3_BLACK    color3_new(0.0f, 0.0f, 0.0f)
+#define COLOR3_RED      color3_new(1.0f, 0.0f, 0.0f)
+#define COLOR3_GREEN    color3_new(0.0f, 1.0f, 0.0f)
+#define COLOR3_BLUE     color3_new(0.0f, 0.0f, 1.0f)
+#define COLOR3_YELLOW   color3_new(1.0f, 1.0f, 0.0f)
+#define COLOR3_PINK     color3_new(1.0f, 0.0f, 1.0f)
+#define COLOR3_CYAN     color3_new(0.0f, 1.0f, 1.0f)
+#define COLOR3_WHITE    color3_new(1.0f, 1.0f, 1.0f)
+
 color3 color3_new       (f32 r, f32 g, f32 b);
-bool   color3_compare   (color3 *c1, color3 *c2);
-color3 color3_add       (color3 *c1, color3 *c2);
-color3 color3_sub       (color3 *c1, color3 *c2);
-color3 color3_scalar_mul(color3 *c,  f32 scalar);
-color3 color3_mul       (color3 *c1, color3 *c2);
-u32    color3_as_u32    (color3 *c);
+bool   color3_compare   (color3 c1, color3 c2);
+color3 color3_add       (color3 c1, color3 c2);
+color3 color3_sub       (color3 c1, color3 c2);
+color3 color3_scalar_mul(color3 c,  f32 scalar);
+color3 color3_mul       (color3 c1, color3 c2);
+u32    color3_as_u32    (color3 c);
 
 
 // Canvas type
@@ -100,8 +109,8 @@ typedef struct _bitmap {
 #define BITMAP_PIX_OFFSET       offsetof(bitmap, pixels)
 
 canvas *canvas_create       (u32 width, u32 height);
-void    canvas_set_pixel    (canvas *can, u32 x, u32 y, color3 *color);
-color3 *canvas_get_pixel    (canvas *can, u32 x, u32 y);
+void    canvas_set_pixel    (canvas *can, u32 x, u32 y, color3 color);
+color3  canvas_get_pixel    (canvas *can, u32 x, u32 y);
 canvas *canvas_delete       (canvas *can);
 bitmap *canvas_as_bitmap    (canvas *can);
 bitmap *canvas_bitmap_delete(bitmap *bmp);
