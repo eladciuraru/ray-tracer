@@ -6,23 +6,20 @@ sphere sphere_new(void) {
     };
 }
 
-intersect_list *intersect_list_new(sphere *s, u32 count, f32 values[]) {
-    usize          size  = sizeof(intersect_list) + count * sizeof(values[0]);
-    intersect_list *list = (intersect_list *) _allocate_buffer(size);
+intersect_list intersect_list_new(sphere *s, u32 count, f32 values[]) {
+    _ASSERT(count <= INTERSECT_LIST_LIMIT);
 
-    list->s     = s;
-    list->count = count;
+    intersect_list list = {
+        .s     = s,
+        .count = count,
+    };
+
     for (usize i = 0; i < count; i++) {
-        list->values[i] = values[i];
+        list.values[i] = values[i];
     }
 
     return list;
 };
-
-
-intersect_list *intersect_list_delete(intersect_list *list) {
-    return _deallocate(list);
-}
 
 
 u32 intersect_list_hit(intersect_list *list) {
@@ -41,7 +38,7 @@ u32 intersect_list_hit(intersect_list *list) {
 }
 
 
-intersect_list *sphere_intersect(sphere *s, ray *r) {
+intersect_list sphere_intersect(sphere *s, ray *r) {
     ray  new_ray   = ray_transform(r, mat4_inverse(s->transform));
     vec4 direction = vec4_sub(new_ray.origin, s->origin);
 
@@ -50,7 +47,7 @@ intersect_list *sphere_intersect(sphere *s, ray *r) {
     f32 c            = vec4_dot_product(direction, direction) - 1.0f;
     f32 discriminant = b * b - 4 * a * c;
 
-    intersect_list *list = NULL;
+    intersect_list list;
     if (discriminant >= 0.0f) {
         f32 dis_sqrt = sqrtf(discriminant);
         f32 values[] = {

@@ -26,13 +26,11 @@ static void answer_chapter5(void) {
             vec4 wall_dir = vec4_sub(wall_pos, ray_origin);
             ray  r        = ray_new(ray_origin, vec4_normalize(wall_dir));
 
-            intersect_list *list = sphere_intersect(&s, &r);
-            u32             hit  = intersect_list_hit(list);
+            intersect_list list = sphere_intersect(&s, &r);
+            u32            hit  = intersect_list_hit(&list);
             if (hit != INTERSECT_NO_HIT) {
                 canvas_set_pixel(can, col, row, COLOR3_RED);
             }
-
-            list = intersect_list_delete(list);
         }
     }
 

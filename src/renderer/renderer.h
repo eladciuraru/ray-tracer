@@ -184,10 +184,16 @@ sphere sphere_new(void);
 vec4   sphere_normal_at(sphere *s, vec4 point);
 
 // Intersect type
+// Hardlimit the amount of values, for providing API
+// that do not requires dynamically allocated memory
+// - This limit should be enough, but in case it doesn't
+//   just increase this value
+#define INTERSECT_LIST_LIMIT    10
+
 typedef struct _intersect_list {
     sphere *s;
-    u32    count;
-    f32    values[];
+    u32     count;
+    f32     values[INTERSECT_LIST_LIMIT];
 } intersect_list;
 
 #define INTERSECT_NO_HIT        ((u32) - 1)
@@ -203,7 +209,6 @@ typedef struct _intersect_list {
         name = intersect_list_new(sphere, 0, NULL); \
     } while (false);
 
-intersect_list *sphere_intersect     (sphere *s, ray *r);
-intersect_list *intersect_list_new   (sphere *s, u32 count, f32 values[]);
-intersect_list *intersect_list_delete(intersect_list *list);
-u32             intersect_list_hit   (intersect_list *list);
+intersect_list sphere_intersect  (sphere *s, ray *r);
+intersect_list intersect_list_new(sphere *s, u32 count, f32 values[]);
+u32            intersect_list_hit(intersect_list *list);

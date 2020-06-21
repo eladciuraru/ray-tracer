@@ -54,14 +54,12 @@ void test_sphere_intersection(void) {
         u32  count  = tests[i].count;
         f32 *values = tests[i].values;
 
-        intersect_list *res = sphere_intersect(&s, r);
+        intersect_list res = sphere_intersect(&s, r);
 
-        assert(res->count == count);
-        for (u32 j = 0; j < res->count; j++) {
-            assert(f32_compare(res->values[j], values[j]));
+        assert(res.count == count);
+        for (u32 j = 0; j < res.count; j++) {
+            assert(f32_compare(res.values[j], values[j]));
         }
-
-        res = intersect_list_delete(res);
     }
 }
 
@@ -77,23 +75,19 @@ void test_intersection_hit(void) {
     for (usize i = 0; i < _countof(tests); i++) {
         f32  *values = tests[i].values;
         u32   index  = tests[i].index;
-        intersect_list *list = intersect_list_new(&s, _countof(values), values);
+        intersect_list list = intersect_list_new(&s, _countof(values), values);
 
-        u32 res = intersect_list_hit(list);
+        u32 res = intersect_list_hit(&list);
         assert(res == index);
-
-        list = intersect_list_delete(list);
     }
 
     // Last special test - variable sized array values
     u32 index = 3;
-    intersect_list *list;
+    intersect_list list;
     intersect_list_init(list, &s, 5.0f, 7.0f, -3.0f, 2.0f);
 
-    u32 res = intersect_list_hit(list);
+    u32 res = intersect_list_hit(&list);
     assert(res == index);
-
-    list = intersect_list_delete(list);
 }
 
 
@@ -129,12 +123,10 @@ void test_sphere_scaled_intersection(void) {
     sphere s    = sphere_new();
     s.transform = mat4_scale(s.transform, 2.0f, 2.0f, 2.0f);
 
-    intersect_list *list = sphere_intersect(&s, &r);
-    assert(list->count == 2);
-    assert(list->values[0] == 3.0f);
-    assert(list->values[1] == 7.0f);
-
-    intersect_list_delete(list);
+    intersect_list list = sphere_intersect(&s, &r);
+    assert(list.count == 2);
+    assert(list.values[0] == 3.0f);
+    assert(list.values[1] == 7.0f);
 }
 
 
@@ -144,10 +136,8 @@ void test_sphere_translated_intersection(void) {
     sphere s    = sphere_new();
     s.transform = mat4_translate(s.transform, 5.0f, 0.0f, 0.0f);
 
-    intersect_list *list = sphere_intersect(&s, &r);
-    assert(list->count == 0);
-
-    intersect_list_delete(list);
+    intersect_list list = sphere_intersect(&s, &r);
+    assert(list.count == 0);
 }
 
 
