@@ -44,6 +44,7 @@ f32  vec4_magnitude    (vec4 v);
 vec4 vec4_normalize    (vec4 v);
 f32  vec4_dot_product  (vec4 v1, vec4 v2);
 vec4 vec4_cross_product(vec4 v1, vec4 v2);
+vec4 vec4_reflect      (vec4 v, vec4 normal);
 
 
 // Color type
@@ -174,10 +175,26 @@ ray  ray_new      (vec4 origin, vec4 direction);
 vec4 ray_position (ray *r, f32 time);
 ray  ray_transform(ray *r, mat4 transform);
 
+
+// Type Material
+typedef struct _material {
+    color3 color;
+    f32    ambient;
+    f32    diffuse;
+    f32    specular;
+    f32    shininess;
+} material;
+
+material material_new    (color3 color, f32 ambient, f32 diffuse,
+                          f32 specular, f32 shininess);
+material material_default(void);
+
+
 // Sphere type
 typedef struct _sphere {
-    vec4 origin;
-    mat4 transform;
+    vec4     origin;
+    mat4     transform;
+    material material;
 } sphere;
 
 sphere sphere_new(void);
@@ -212,3 +229,14 @@ typedef struct _intersect_list {
 intersect_list sphere_intersect  (sphere *s, ray *r);
 intersect_list intersect_list_new(sphere *s, u32 count, f32 values[]);
 u32            intersect_list_hit(intersect_list *list);
+
+
+// Type light
+typedef struct _light_point {
+    vec4   position;
+    color3 intensity;
+} light_point;
+
+light_point light_point_new  (vec4 position, color3 intensity);
+color3      light_point_color(light_point light, material m, vec4 point,
+                              vec4 view, vec4 normal);

@@ -12,3 +12,5 @@
 #include "renderer\renderer_matrix.c"
 #include "renderer\renderer_ray.c"
 #include "renderer\renderer_sphere.c"
+#include "renderer\renderer_light.c"
+#include "renderer\renderer_material.c"

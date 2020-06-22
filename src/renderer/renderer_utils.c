@@ -47,3 +47,13 @@ bool f32_compare(f32 num, f32 other) {
            ((num - other) < epsilon) :
            ((other - num) < epsilon);
 }
+
+
+static inline f32 clamp(f32 value, f32 min, f32 max) {
+    return max(min(max, value), min);
+}
+
+
+static inline f32 clamp_01(f32 value) {
+    return clamp(value, 0.0f, 1.0f);
+}

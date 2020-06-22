@@ -16,6 +16,7 @@
 #include "./test_renderer_matrix.c"
 #include "./test_renderer_transform.c"
 #include "./test_renderer_ray_sphere.c"
+#include "./test_renderer_light.c"
 
 
 int main(void) {
@@ -25,6 +26,7 @@ int main(void) {
     test_suite_matrix();
     test_suite_transform();
     test_suite_ray_sphere();
+    test_suite_light();
 
     return EXIT_SUCCESS;
 }

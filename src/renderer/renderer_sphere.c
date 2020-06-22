@@ -3,6 +3,7 @@ sphere sphere_new(void) {
     return (sphere) {
         .origin    = vec4_make_point(0.0f, 0.0f, 0.0f),
         .transform = mat4_identity(),
+        .material  = material_default(),
     };
 }
 

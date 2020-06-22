@@ -123,3 +123,14 @@ vec4 vec4_cross_product(vec4 v1, vec4 v2) {
         v1.x * v2.y - v1.y * v2.x,
     };
 }
+
+
+vec4 vec4_reflect(vec4 v, vec4 normal) {
+    _ASSERT(vec4_is_vector(v));
+    _ASSERT(vec4_is_vector(normal));
+
+    vec4 mul = vec4_scalar_mul(vec4_scalar_mul(normal, 2.0f),
+                               vec4_dot_product(v, normal));
+
+    return vec4_sub(v, mul);
+}

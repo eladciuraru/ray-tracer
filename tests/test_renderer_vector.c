@@ -178,6 +178,32 @@ void test_cross_product_vector(void) {
 }
 
 
+void test_reflect_vector(void) {
+    f32 sqrt2_2 = sqrtf(2.0f) / 2.0f;
+    struct { vec4 v, normal, ref; } tests[] = {
+        {
+            vec4_make_vector(1.0f, -1.0f, 0.0f),
+            vec4_make_vector(0.0f,  1.0f, 0.0f),
+            vec4_make_vector(1.0f,  1.0f, 0.0f),
+        },
+        {
+            vec4_make_vector(0.0f, -1.0f, 0.0f),
+            vec4_make_vector(sqrt2_2, sqrt2_2, 0.0f),
+            vec4_make_vector(1.0f,  0.0f, 0.0f),
+        }
+    };
+
+    for (usize i = 0; i < _countof(tests); i++) {
+        vec4 v   = tests[i].v;
+        vec4 n   = tests[i].normal;
+        vec4 ref = tests[i].ref;
+
+        vec4 res = vec4_reflect(v, n);
+        assert(vec4_compare(res, ref) == true);
+    }
+}
+
+
 void test_suite_vector(void) {
     printf("Running tests for renderer_vector.c\n");
 
@@ -191,6 +217,7 @@ void test_suite_vector(void) {
     test_normalize_vector();
     test_dot_product_vector();
     test_cross_product_vector();
+    test_reflect_vector();
 
     printf("Succesfully ran all tests\n");
 }

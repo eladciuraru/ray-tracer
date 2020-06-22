@@ -6,6 +6,10 @@ This is my first step in the world of computer graphics and renedering,
 so this project will probably be revisted and rewritten at a later stage.
 
 
+# Images
+![Sphere with light](answers_output/chapter6/sphere_light_small.bmp "Chapter 6")
+
+
 # Build
 This repo includes 2 batch scripts to compile this project.
 * __`shell.bat`__

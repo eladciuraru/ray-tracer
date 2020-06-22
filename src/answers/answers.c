@@ -13,6 +13,7 @@
 #include "answers/answers_chapter3.c"
 #include "answers/answers_chapter4.c"
 #include "answers/answers_chapter5.c"
+#include "answers/answers_chapter6.c"
 
 
 typedef void (*answer_func)(void);
@@ -24,6 +25,7 @@ answer_func answers[] = {
     &answer_chapter3,
     &answer_chapter4,
     &answer_chapter5,
+    &answer_chapter6,
 };
 
 
