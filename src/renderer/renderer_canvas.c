@@ -27,7 +27,7 @@ color3 canvas_get_pixel(canvas *can, u32 x, u32 y) {
 }
 
 
-canvas *canvas_delete(canvas *can) {
+canvas *canvas_destroy(canvas *can) {
     return _deallocate(can);
 }
 
@@ -60,6 +60,6 @@ bitmap *canvas_as_bitmap(canvas *can) {
 }
 
 
-bitmap *canvas_bitmap_delete(bitmap *bmp) {
+bitmap *canvas_bitmap_destroy(bitmap *bmp) {
     return _deallocate(bmp);
 }

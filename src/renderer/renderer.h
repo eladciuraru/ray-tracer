@@ -112,9 +112,9 @@ typedef struct _bitmap {
 canvas *canvas_create       (u32 width, u32 height);
 void    canvas_set_pixel    (canvas *can, u32 x, u32 y, color3 color);
 color3  canvas_get_pixel    (canvas *can, u32 x, u32 y);
-canvas *canvas_delete       (canvas *can);
+canvas *canvas_destroy      (canvas *can);
 bitmap *canvas_as_bitmap    (canvas *can);
-bitmap *canvas_bitmap_delete(bitmap *bmp);
+bitmap *canvas_bitmap_destroy(bitmap *bmp);
 
 
 // Matrix type

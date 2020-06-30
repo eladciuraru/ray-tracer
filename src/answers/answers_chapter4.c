@@ -35,5 +35,5 @@ static void answer_chapter4(void) {
     }
 
     write_canvas(can, "answers_output\\chapter4\\clock.bmp");
-    can = canvas_delete(can);
+    can = canvas_destroy(can);
 }

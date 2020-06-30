@@ -26,5 +26,5 @@ static void answer_chapter2(void) {
     }
 
     write_canvas(can, "answers_output\\chapter2\\4.bmp");
-    can = canvas_delete(can);
+    can = canvas_destroy(can);
 }

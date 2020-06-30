@@ -35,5 +35,5 @@ static void answer_chapter5(void) {
     }
 
     write_canvas(can, "answers_output\\chapter5\\sphere.bmp");
-    can = canvas_delete(can);
+    can = canvas_destroy(can);
 }

@@ -44,5 +44,5 @@ static void answer_chapter6(void) {
     }
 
     write_canvas(can, "answers_output\\chapter6\\sphere_light_small.bmp");
-    can = canvas_delete(can);
+    can = canvas_destroy(can);
 }
