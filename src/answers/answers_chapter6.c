@@ -30,16 +30,18 @@ static void answer_chapter6(void) {
             vec4 wall_dir = vec4_sub(wall_pos, ray_origin);
             ray  r        = ray_new(ray_origin, vec4_normalize(wall_dir));
 
-            intersect_list list = sphere_intersect(&s, &r);
-            u32            hit  = intersect_list_hit(&list);
+            intersect *list = sphere_intersect(&s, &r);
+            intersect *hit  = intersect_list_hit(list);
             if (hit != INTERSECT_NO_HIT) {
-                vec4 point  = ray_position(&r, list.values[hit]);
-                vec4 normal = sphere_normal_at(list.s, point);
+                vec4 point  = ray_position(&r, hit->value);
+                vec4 normal = sphere_normal_at(hit->s, point);
                 vec4 view   = vec4_negate(r.direction);
 
-                color3 color = light_point_color(light, list.s->material, point, view, normal);
+                color3 color = light_point_color(light, hit->s->material, point, view, normal);
                 canvas_set_pixel(can, col, row, color);
             }
+
+            list = intersect_list_destroy(list);
         }
     }
 

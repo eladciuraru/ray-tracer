@@ -33,6 +33,20 @@ static void *_allocate_buffer(usize size) {
 }
 
 
+static void *_reallocate_buffer(void *buffer, usize size) {
+    void *addr = realloc(buffer, size);
+
+    // In later implementation of allcoate, we don't want to ever fail,
+    // in case of failure we will just compile with bigger pre allocated memory
+    _ASSERT(addr != NULL);
+
+    // TODO: Think what to do about the difference between
+    //       zeroed/non zeroed allocation
+
+    return addr;
+}
+
+
 static void *_deallocate(void *addr) {
     free(addr);
 

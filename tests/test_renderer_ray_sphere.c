@@ -21,73 +21,103 @@ void test_ray_position(void) {
 
 void test_sphere_intersection(void) {
     sphere s = sphere_new();
-    struct { ray r; u32 count; f32 values[2]; } tests[] = {
+    struct { ray r; u32 count; intersect xs[2]; } tests[] = {
         {
             ray_new(vec4_make_point (0.0f, 0.0f, -5.0f),
                     vec4_make_vector(0.0f, 0.0f,  1.0f)),
-            2, { 4.0f, 6.0f },
+            2, { intersect_new(&s, 4.0f), intersect_new(&s, 6.0f) },
         },
         {
             ray_new(vec4_make_point (0.0f, 1.0f, -5.0f),
                     vec4_make_vector(0.0f, 0.0f,  1.0f)),
-            2, { 5.0f, 5.0f },
+            2, { intersect_new(&s, 5.0f), intersect_new(&s, 5.0f) },
         },
         {
             ray_new(vec4_make_point (0.0f, 2.0f, -5.0f),
                     vec4_make_vector(0.0f, 0.0f,  1.0f)),
-            0, { 0.0f },
+            0,
         },
         {
             ray_new(vec4_make_point (0.0f, 0.0f, 0.0f),
                     vec4_make_vector(0.0f, 0.0f, 1.0f)),
-            2, { -1.0f, 1.0f },
+            2, { intersect_new(&s, -1.0f), intersect_new(&s, 1.0f) },
         },
         {
             ray_new(vec4_make_point (0.0f, 0.0f, 5.0f),
                     vec4_make_vector(0.0f, 0.0f, 1.0f)),
-            2, { -6.0f, -4.0f },
+            2, { intersect_new(&s, -6.0f), intersect_new(&s, -4.0f) },
         },
     };
 
     for (usize i = 0; i < _countof(tests); i++) {
-        ray *r      = &tests[i].r;
-        u32  count  = tests[i].count;
-        f32 *values = tests[i].values;
+        ray        *r    = &tests[i].r;
+        u32        count = tests[i].count;
+        intersect *xs    = tests[i].xs;
 
-        intersect_list res = sphere_intersect(&s, r);
+        intersect *res = sphere_intersect(&s, r);
 
-        assert(res.count == count);
-        for (u32 j = 0; j < res.count; j++) {
-            assert(f32_compare(res.values[j], values[j]));
+        assert(intersect_list_len(res) == count);
+        for (u32 j = 0; j < count; j++) {
+            assert(intersect_compare(res[j], xs[j]));
         }
+
+        res = intersect_list_destroy(res);
     }
 }
 
 
 void test_intersection_hit(void) {
     sphere s = sphere_new();
-    struct {u32 index; f32 values[2]; } tests[] = {
-        { 0, {  1.0f, 2.0f } },
-        { 1, { -1.0f, 1.0f } },
-        { INTERSECT_NO_HIT, { -2.0f, -1.0f } },
+    struct { bool flag; intersect hit; intersect xs[2]; } tests[] = {
+        {
+            true,
+            intersect_new(&s, 1.0f),
+            { intersect_new(&s, 1.0f) , intersect_new(&s, 2.0) }
+        },
+        {
+            true,
+            intersect_new(&s, 1.0),
+            { intersect_new(&s, -1.0f), intersect_new(&s, 1.0f) }
+        },
+        {
+            false,
+            intersect_new(NULL, 0.0f),
+            { intersect_new(&s, -2.0f), intersect_new(&s, -1.0f) }
+        },
     };
 
     for (usize i = 0; i < _countof(tests); i++) {
-        f32  *values = tests[i].values;
-        u32   index  = tests[i].index;
-        intersect_list list = intersect_list_new(&s, _countof(values), values);
+        bool       flag = tests[i].flag;
+        intersect *xs   = tests[i].xs;
+        intersect  hit  = tests[i].hit;
 
-        u32 res = intersect_list_hit(&list);
-        assert(res == index);
+        intersect *list = NULL;
+
+        list = intersect_list_append(list, xs[0]);
+        list = intersect_list_append(list, xs[1]);
+
+        intersect *res = intersect_list_hit(list);
+        if (flag == true) {
+            assert(intersect_compare(*res, hit));
+        } else {
+            assert(res == INTERSECT_NO_HIT);
+        }
+
+        list = intersect_list_destroy(list);
     }
 
     // Last special test - variable sized array values
-    u32 index = 3;
-    intersect_list list;
-    intersect_list_init(list, &s, 5.0f, 7.0f, -3.0f, 2.0f);
+    intersect *list = NULL;
 
-    u32 res = intersect_list_hit(&list);
-    assert(res == index);
+    list = intersect_list_append(list, intersect_new(&s,  5.0f));
+    list = intersect_list_append(list, intersect_new(&s,  7.0f));
+    list = intersect_list_append(list, intersect_new(&s, -3.0f));
+    list = intersect_list_append(list, intersect_new(&s,  2.0f));
+
+    intersect *res = intersect_list_hit(list);
+    assert(intersect_compare(*res, list[3]));
+
+    list = intersect_list_destroy(list);
 }
 
 
@@ -123,10 +153,10 @@ void test_sphere_scaled_intersection(void) {
     sphere s    = sphere_new();
     s.transform = mat4_scale(s.transform, 2.0f, 2.0f, 2.0f);
 
-    intersect_list list = sphere_intersect(&s, &r);
-    assert(list.count == 2);
-    assert(list.values[0] == 3.0f);
-    assert(list.values[1] == 7.0f);
+    intersect *list = sphere_intersect(&s, &r);
+    assert(intersect_list_len(list) == 2);
+    assert(intersect_compare(list[0], intersect_new(&s, 3.0f)));
+    assert(intersect_compare(list[1], intersect_new(&s, 7.0f)));
 }
 
 
@@ -136,8 +166,8 @@ void test_sphere_translated_intersection(void) {
     sphere s    = sphere_new();
     s.transform = mat4_translate(s.transform, 5.0f, 0.0f, 0.0f);
 
-    intersect_list list = sphere_intersect(&s, &r);
-    assert(list.count == 0);
+    intersect *list = sphere_intersect(&s, &r);
+    assert(intersect_list_len(list) == 0);
 }
 
 

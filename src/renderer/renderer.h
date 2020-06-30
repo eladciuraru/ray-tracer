@@ -197,38 +197,31 @@ typedef struct _sphere {
     material material;
 } sphere;
 
-sphere sphere_new(void);
-vec4   sphere_normal_at(sphere *s, vec4 point);
+// This is required because of type dependency
+typedef struct _intersect intersect;
+
+sphere     sphere_new      (void);
+vec4       sphere_normal_at(sphere *s, vec4 point);
+intersect *sphere_intersect(sphere *s, ray *r);
+
 
 // Intersect type
-// Hardlimit the amount of values, for providing API
-// that do not requires dynamically allocated memory
-// - This limit should be enough, but in case it doesn't
-//   just increase this value
-#define INTERSECT_LIST_LIMIT    10
-
-typedef struct _intersect_list {
+typedef struct _intersect {
     sphere *s;
-    u32     count;
-    f32     values[INTERSECT_LIST_LIMIT];
-} intersect_list;
+    f32     value;
+} intersect;
 
-#define INTERSECT_NO_HIT        ((u32) - 1)
+#define INTERSECT_NO_HIT    NULL
 
-#define intersect_list_init(name, sphere, ...) \
-    do { \
-        f32 values[] = {__VA_ARGS__}; \
-        name         = intersect_list_new(sphere, _countof(values), values); \
-    } while (false);
-
-#define intersect_list_init_empty(name, sphere) \
-    do { \
-        name = intersect_list_new(sphere, 0, NULL); \
-    } while (false);
-
-intersect_list sphere_intersect  (sphere *s, ray *r);
-intersect_list intersect_list_new(sphere *s, u32 count, f32 values[]);
-u32            intersect_list_hit(intersect_list *list);
+intersect  intersect_new         (sphere *s, f32 value);
+bool       intersect_compare     (intersect i1, intersect i2);
+intersect *intersect_list_create (u32 limit);
+void      *intersect_list_destroy(intersect *list);
+u32        intersect_list_len    (intersect *list);
+intersect *intersect_list_append (intersect *list, intersect i);
+intersect  intersect_list_pop    (intersect *list);
+void       intersect_list_sort   (intersect *list);
+intersect *intersect_list_hit    (intersect *list);
 
 
 // Type light
