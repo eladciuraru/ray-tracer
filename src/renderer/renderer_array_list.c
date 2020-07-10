@@ -67,7 +67,7 @@ static inline void *_array_list_append(void *list, void *item, usize item_size) 
         list       = header->raw_buffer;
     }
 
-    u8 *dest = ((u8 *) list) + header->length * item_size;
+    void *dest = ((u8 *) list) + header->length * item_size;
     memmove(dest, item, item_size);
     header->length += 1;
 
@@ -80,6 +80,16 @@ static inline void _array_list_pop(void *list, void *item, usize item_size) {
     _ASSERT(header->length > 0);
 
     header->length -= 1;
-    u8 *src         = ((u8 *) list) + header->length * item_size;
+    void *src       = ((u8 *) list) + header->length * item_size;
     memmove(item, src, item_size);
+}
+
+
+static inline void *_array_list_extend(void *list, void *other, usize item_size) {
+    for (u32 i = 0; i < _array_list_len(other); i++) {
+        void *src = ((u8 *) other) + i * item_size;
+        list      = _array_list_append(list, src, item_size);
+    }
+
+    return list;
 }

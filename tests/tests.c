@@ -17,6 +17,8 @@
 #include "./test_renderer_transform.c"
 #include "./test_renderer_ray_sphere.c"
 #include "./test_renderer_light.c"
+#include "./test_renderer_world.c"
+#include "./test_renderer_camera.c"
 
 
 int main(void) {
@@ -27,6 +29,8 @@ int main(void) {
     test_suite_transform();
     test_suite_ray_sphere();
     test_suite_light();
+    test_suite_world();
+    test_suite_camera();
 
     return EXIT_SUCCESS;
 }

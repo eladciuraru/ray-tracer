@@ -234,6 +234,38 @@ void test_sphere_transform_normal_at(void) {
 }
 
 
+void test_intersection_ex_compute_outside(void) {
+    ray       r = ray_new(vec4_make_point (0.0f, 0.0f, -5.0f),
+                          vec4_make_vector(0.0f, 0.0f,  1.0f));
+    sphere    s = sphere_new();
+    intersect i = intersect_new(&s, 4.0f);
+
+    intersect_ex res = intersect_ex_compute(i, r);
+    assert(res.s      == i.s);
+    assert(res.value  == i.value);
+    assert(res.inside == false);
+    assert(vec4_compare(res.point,  vec4_make_point (0.0f, 0.0f, -1.0f)) == true);
+    assert(vec4_compare(res.view,   vec4_make_vector(0.0f, 0.0f, -1.0f)) == true);
+    assert(vec4_compare(res.normal, vec4_make_vector(0.0f, 0.0f, -1.0f)) == true);
+}
+
+
+void test_intersection_ex_compute_inside(void) {
+    ray       r = ray_new(vec4_make_point (0.0f, 0.0f, 0.0f),
+                          vec4_make_vector(0.0f, 0.0f, 1.0f));
+    sphere    s = sphere_new();
+    intersect i = intersect_new(&s, 1.0f);
+
+    intersect_ex res = intersect_ex_compute(i, r);
+    assert(res.s      == i.s);
+    assert(res.value  == i.value);
+    assert(res.inside == true);
+    assert(vec4_compare(res.point,  vec4_make_point (0.0f, 0.0f,  1.0f)) == true);
+    assert(vec4_compare(res.view,   vec4_make_vector(0.0f, 0.0f, -1.0f)) == true);
+    assert(vec4_compare(res.normal, vec4_make_vector(0.0f, 0.0f, -1.0f)) == true);
+}
+
+
 void test_suite_ray_sphere(void) {
     printf("Running tests for renderer_ray.c\n");
 
@@ -246,6 +278,8 @@ void test_suite_ray_sphere(void) {
     test_sphere_translated_intersection();
     test_sphere_normal_at();
     test_sphere_transform_normal_at();
+    test_intersection_ex_compute_outside();
+    test_intersection_ex_compute_inside();
 
     printf("Succesfully ran all tests\n");
 }

@@ -208,6 +208,23 @@ mat4 mat4_shearing(mat4 m, f32 xy, f32 xz, f32 yx, f32 yz, f32 zx, f32 zy) {
 }
 
 
+mat4 mat4_view(vec4 from, vec4 to, vec4 up) {
+    vec4 forward     = vec4_normalize(vec4_sub(to, from));
+    vec4 left        = vec4_cross_product(forward, vec4_normalize(up));
+    vec4 true_up     = vec4_cross_product(left, forward);
+    mat4 orientation = {
+         left.x,     left.y,     left.z,    0.0f,
+         true_up.x,  true_up.y,  true_up.z, 0.0f,
+        -forward.x, -forward.y, -forward.z, 0.0f,
+         0.0f,       0.0f,       0.0f,      1.0f,
+    };
+    mat4 translation = mat4_translate(mat4_new_transform(),
+                                      -from.x, -from.y, -from.z);
+
+    return mat4_mul(orientation, translation);
+}
+
+
 bool mat3_compare(mat3 m1, mat3 m2) {
     for (u32 row = 0; row < MAT3_SIZE; row++) {
         for (u32 col = 0; col < MAT3_SIZE; col++) {

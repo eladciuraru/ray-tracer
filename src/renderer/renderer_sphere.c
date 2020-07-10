@@ -44,3 +44,37 @@ vec4 sphere_normal_at(sphere *s, vec4 point) {
 
     return vec4_normalize(world_normal);
 }
+
+
+u32 sphere_list_len(sphere *list) {
+    return _array_list_len(list);
+}
+
+
+sphere *sphere_list_create(u32 limit) {
+    return _array_list_create(limit, sizeof(sphere));
+}
+
+
+void *sphere_list_destroy(sphere *list) {
+    return _array_list_destroy(list);
+}
+
+
+sphere *sphere_list_append(sphere *list, sphere s) {
+    return _array_list_append(list, &s, sizeof(s));
+}
+
+
+sphere sphere_list_pop(sphere *list) {
+    sphere s;
+
+    _array_list_pop(list, &s, sizeof(s));
+
+    return s;
+}
+
+
+sphere *sphere_list_extend(sphere *list, sphere *other) {
+    return _array_list_extend(list, other, sizeof(*list));
+}

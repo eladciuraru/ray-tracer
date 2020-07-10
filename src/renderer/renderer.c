@@ -16,3 +16,5 @@
 #include "renderer\renderer_intersect_list.c"
 #include "renderer\renderer_light.c"
 #include "renderer\renderer_material.c"
+#include "renderer\renderer_world.c"
+#include "renderer\renderer_camera.c"

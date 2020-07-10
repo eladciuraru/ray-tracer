@@ -50,14 +50,15 @@ vec4 vec4_reflect      (vec4 v, vec4 normal);
 // Color type
 typedef struct _color3 { f32 r, g, b; } color3;
 
-#define COLOR3_BLACK    color3_new(0.0f, 0.0f, 0.0f)
-#define COLOR3_RED      color3_new(1.0f, 0.0f, 0.0f)
-#define COLOR3_GREEN    color3_new(0.0f, 1.0f, 0.0f)
-#define COLOR3_BLUE     color3_new(0.0f, 0.0f, 1.0f)
-#define COLOR3_YELLOW   color3_new(1.0f, 1.0f, 0.0f)
-#define COLOR3_PINK     color3_new(1.0f, 0.0f, 1.0f)
-#define COLOR3_CYAN     color3_new(0.0f, 1.0f, 1.0f)
-#define COLOR3_WHITE    color3_new(1.0f, 1.0f, 1.0f)
+#define COLOR3_BLACK            color3_new(0.0f, 0.0f, 0.0f)
+#define COLOR3_RED              color3_new(1.0f, 0.0f, 0.0f)
+#define COLOR3_GREEN            color3_new(0.0f, 1.0f, 0.0f)
+#define COLOR3_BLUE             color3_new(0.0f, 0.0f, 1.0f)
+#define COLOR3_YELLOW           color3_new(1.0f, 1.0f, 0.0f)
+#define COLOR3_PINK             color3_new(1.0f, 0.0f, 1.0f)
+#define COLOR3_CYAN             color3_new(0.0f, 1.0f, 1.0f)
+#define COLOR3_WHITE            color3_new(1.0f, 1.0f, 1.0f)
+#define COLOR3_MAX_INTENSITY    COLOR3_WHITE
 
 color3 color3_new       (f32 r, f32 g, f32 b);
 bool   color3_compare   (color3 c1, color3 c2);
@@ -109,11 +110,11 @@ typedef struct _bitmap {
 #define BITMAP_BPP              sizeof(u32) * 8
 #define BITMAP_PIX_OFFSET       offsetof(bitmap, pixels)
 
-canvas *canvas_create       (u32 width, u32 height);
-void    canvas_set_pixel    (canvas *can, u32 x, u32 y, color3 color);
-color3  canvas_get_pixel    (canvas *can, u32 x, u32 y);
-canvas *canvas_destroy      (canvas *can);
-bitmap *canvas_as_bitmap    (canvas *can);
+canvas *canvas_create        (u32 width, u32 height);
+void    canvas_set_pixel     (canvas *can, u32 x, u32 y, color3 color);
+color3  canvas_get_pixel     (canvas *can, u32 x, u32 y);
+canvas *canvas_destroy       (canvas *can);
+bitmap *canvas_as_bitmap     (canvas *can);
 bitmap *canvas_bitmap_destroy(bitmap *bmp);
 
 
@@ -163,6 +164,7 @@ mat4 mat4_rotate_x (mat4 m, f32 radians);
 mat4 mat4_rotate_y (mat4 m, f32 radians);
 mat4 mat4_rotate_z (mat4 m, f32 radians);
 mat4 mat4_shearing (mat4 m, f32 xy, f32 xz, f32 yx, f32 yz, f32 zx, f32 zy);
+mat4 mat4_view     (vec4 from, vec4 to, vec4 up);
 
 
 // Ray type
@@ -200,9 +202,15 @@ typedef struct _sphere {
 // This is required because of type dependency
 typedef struct _intersect intersect;
 
-sphere     sphere_new      (void);
-vec4       sphere_normal_at(sphere *s, vec4 point);
-intersect *sphere_intersect(sphere *s, ray *r);
+sphere     sphere_new         (void);
+vec4       sphere_normal_at   (sphere *s, vec4 point);
+intersect *sphere_intersect   (sphere *s, ray *r);
+sphere    *sphere_list_create (u32 limit);
+void      *sphere_list_destroy(sphere *list);
+u32        sphere_list_len    (sphere *list);
+sphere    *sphere_list_append (sphere *list, sphere s);
+sphere     sphere_list_pop    (sphere *list);
+sphere    *sphere_list_extend (sphere *list, sphere *other);
 
 
 // Intersect type
@@ -211,20 +219,33 @@ typedef struct _intersect {
     f32     value;
 } intersect;
 
+// ex for extended/extra
+typedef struct _intersect_ex {
+    sphere *s;
+    f32     value;
+    bool    inside;
+    vec4    point;
+    vec4    view;
+    vec4    normal;
+} intersect_ex;
+
 #define INTERSECT_NO_HIT    NULL
 
-intersect  intersect_new         (sphere *s, f32 value);
-bool       intersect_compare     (intersect i1, intersect i2);
-intersect *intersect_list_create (u32 limit);
-void      *intersect_list_destroy(intersect *list);
-u32        intersect_list_len    (intersect *list);
-intersect *intersect_list_append (intersect *list, intersect i);
-intersect  intersect_list_pop    (intersect *list);
-void       intersect_list_sort   (intersect *list);
-intersect *intersect_list_hit    (intersect *list);
+intersect     intersect_new         (sphere *s, f32 value);
+bool          intersect_compare     (intersect i1, intersect i2);
+intersect_ex  intersect_ex_compute  (intersect i, ray r);
+bool          intersect_ex_compare  (intersect_ex i1, intersect_ex i2);
+intersect    *intersect_list_create (u32 limit);
+void         *intersect_list_destroy(intersect *list);
+u32           intersect_list_len    (intersect *list);
+intersect    *intersect_list_append (intersect *list, intersect i);
+intersect     intersect_list_pop    (intersect *list);
+intersect    *intersect_list_extend (intersect *list, intersect *other);
+void          intersect_list_sort   (intersect *list);
+intersect    *intersect_list_hit    (intersect *list);
 
 
-// Type light
+// Light type
 typedef struct _light_point {
     vec4   position;
     color3 intensity;
@@ -233,3 +254,35 @@ typedef struct _light_point {
 light_point light_point_new  (vec4 position, color3 intensity);
 color3      light_point_color(light_point light, material m, vec4 point,
                               vec4 view, vec4 normal);
+
+
+// World type
+typedef struct _world_map {
+    light_point  light;
+    sphere      *s_list;
+} world_map;
+
+world_map *world_map_create        (void);
+world_map *world_map_create_default(void);
+world_map *world_map_destroy       (world_map *world);
+intersect *world_map_intersect     (world_map *world, ray r);
+color3     world_map_shade_hit     (world_map *world, intersect_ex i_ex);
+color3     world_map_color_at      (world_map *world, ray r);
+
+
+// Camera type
+typedef struct _camera {
+    u32  hsize;
+    u32  vsize;
+    f32  field;
+    mat4 transform;
+
+    // calculated fields
+    f32 half_width;
+    f32 half_height;
+    f32 pixel_size;
+} camera;
+
+camera  camera_new          (u32 hsize, u32 vsize, f32 field);
+ray     camera_ray_for_pixel(camera cam, u32 x, u32 y);
+canvas *camera_render_world (camera cam, world_map *world);

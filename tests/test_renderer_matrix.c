@@ -359,6 +359,53 @@ void test_inverse_matrix4_2(void) {
 }
 
 
+void test_view_matrix4(void) {
+    struct { vec4 from, to, up; mat4 view; } tests[] = {
+        {
+            vec4_make_point (0.0f, 0.0f,  0.0f),
+            vec4_make_point (0.0f, 0.0f, -1.0f),
+            vec4_make_vector(0.0f, 1.0f,  0.0f),
+            mat4_new_transform(),
+        },
+        {
+            vec4_make_point (0.0f, 0.0f, 0.0f),
+            vec4_make_point (0.0f, 0.0f, 1.0f),
+            vec4_make_vector(0.0f, 1.0f, 0.0f),
+            mat4_scale(mat4_new_transform(),
+                       -1.0f, 1.0f, -1.0f),
+        },
+        {
+            vec4_make_point (0.0f, 0.0f, 8.0f),
+            vec4_make_point (0.0f, 0.0f, 0.0f),
+            vec4_make_vector(0.0f, 1.0f, 0.0f),
+            mat4_translate(mat4_new_transform(),
+                           0.0f, 0.0f, -8.0f),
+        },
+        {
+            vec4_make_point (1.0f,  3.0f, 2.0f),
+            vec4_make_point (4.0f, -2.0f, 8.0f),
+            vec4_make_vector(1.0f,  1.0f, 0.0f),
+            {
+                -0.50709f, 0.50709f,  0.67612f, -2.36643f,
+                 0.76772f, 0.60609f,  0.12122f, -2.82843f,
+                -0.35857f, 0.59761f, -0.71714f,  0.00000f,
+                 0.00000f, 0.00000f,  0.00000f,  1.00000f,
+            },
+        },
+    };
+
+    for (usize i = 0; i < _countof(tests); i++) {
+        vec4 from = tests[i].from;
+        vec4 to   = tests[i].to;
+        vec4 up   = tests[i].up;
+        mat4 view = tests[i].view;
+
+        mat4 res = mat4_view(from, to, up);
+        assert(mat4_compare(res, view) == true);
+    }
+}
+
+
 void test_suite_matrix(void) {
     printf("Running tests for renderer_matrix.c\n");
 
@@ -379,6 +426,7 @@ void test_suite_matrix(void) {
     test_is_invertible_matrix4();
     test_inverse_matrix4();
     test_inverse_matrix4_2();
+    test_view_matrix4();
 
     printf("Succesfully ran all tests\n");
 }
