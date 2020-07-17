@@ -38,4 +38,8 @@ echo.
 echo [*] Building answers
 %CC% %CommonCompilerFlags% "%SourceDir%\answers\answers.c" %CommonLinkerFlags%
 
+echo.
+echo [*] Building gen
+%CC% %CommonCompilerFlags% "%SourceDir%\gen\gen.c" %CommonLinkerFlags%
+
 popd

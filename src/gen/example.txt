@@ -1,0 +1,12 @@
+
+Var1: 12.0
+var_2:11
+
+# This is a comment
+test: shape {  # This is another comment
+    pos: point {
+        x: 1
+        y: 2
+        z: 3
+    }
+}
