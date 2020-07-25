@@ -21,17 +21,21 @@ intersect_ex intersect_ex_compute(intersect i, ray r) {
         i_ex.normal = vec4_negate(i_ex.normal);
     }
 
+    i_ex.over_point = vec4_add(i_ex.point,
+                               vec4_scalar_mul(i_ex.normal, 0.001f));//_F32_EPSILON));
+
     return i_ex;
 }
 
 
 bool intersect_ex_compare(intersect_ex i1, intersect_ex i2) {
-    return i1.s      == i2.s                 &&
-           i1.inside == i2.inside            &&
-           f32_compare (i1.value,  i2.value) &&
-           vec4_compare(i1.point,  i2.point) &&
-           vec4_compare(i1.view,   i2.view)  &&
-           vec4_compare(i1.normal, i2.normal);
+    return i1.s      == i2.s                  &&
+           i1.inside == i2.inside             &&
+           f32_compare (i1.value,  i2.value)  &&
+           vec4_compare(i1.point,  i2.point)  &&
+           vec4_compare(i1.view,   i2.view)   &&
+           vec4_compare(i1.normal, i2.normal) &&
+           vec4_compare(i1.over_point, i2.over_point);
 }
 
 

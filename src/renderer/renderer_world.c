@@ -48,11 +48,32 @@ intersect *world_map_intersect(world_map *world, ray r) {
 }
 
 
+bool world_map_is_shadowed(world_map *world, vec4 point) {
+    vec4 vec       = vec4_sub(world->light.position, point);
+    vec4 direction = vec4_normalize(vec);
+    f32  distance  = vec4_magnitude(vec);
+
+    ray        shadow_ray = ray_new(point, direction);
+    intersect *xs_list    = world_map_intersect(world, shadow_ray);
+
+    bool       flag = false;
+    intersect *hit  = intersect_list_hit(xs_list);
+    if (hit != INTERSECT_NO_HIT && hit->value < distance) {
+        flag = true;
+    }
+
+    intersect_list_destroy(xs_list);
+    return flag;
+}
+
+
 // TODO: add support for multiple light point
 //       the result should be all the sub color added together
 color3 world_map_shade_hit(world_map *world, intersect_ex i_ex) {
+    bool in_shadow = world_map_is_shadowed(world, i_ex.over_point);
+
     return light_point_color(world->light, i_ex.s->material, i_ex.point,
-                             i_ex.view, i_ex.normal);
+                             i_ex.view, i_ex.normal, in_shadow);
 }
 
 

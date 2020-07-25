@@ -37,7 +37,7 @@ static void answer_chapter6(void) {
                 vec4 normal = sphere_normal_at(hit->s, point);
                 vec4 view   = vec4_negate(r.direction);
 
-                color3 color = light_point_color(light, hit->s->material, point, view, normal);
+                color3 color = light_point_color(light, hit->s->material, point, view, normal, false);
                 canvas_set_pixel(can, col, row, color);
             }
 

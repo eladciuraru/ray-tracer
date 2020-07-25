@@ -22,9 +22,12 @@ typedef uintptr_t usize;
 typedef float  f32;
 typedef double f64;
 
-typedef char *cstring;
+typedef char *cstring;  // For null terminated strings
+typedef char *string;   // For non null terminated strings
 
 bool f32_compare(f32 num, f32 other);
+
+#define _F32_EPSILON    0.00001f
 
 
 // Vector/Point type
@@ -227,6 +230,7 @@ typedef struct _intersect_ex {
     vec4    point;
     vec4    view;
     vec4    normal;
+    vec4    over_point;
 } intersect_ex;
 
 #define INTERSECT_NO_HIT    NULL
@@ -253,7 +257,7 @@ typedef struct _light_point {
 
 light_point light_point_new  (vec4 position, color3 intensity);
 color3      light_point_color(light_point light, material m, vec4 point,
-                              vec4 view, vec4 normal);
+                              vec4 view, vec4 normal, bool in_shadow);
 
 
 // World type
@@ -266,6 +270,7 @@ world_map *world_map_create        (void);
 world_map *world_map_create_default(void);
 world_map *world_map_destroy       (world_map *world);
 intersect *world_map_intersect     (world_map *world, ray r);
+bool       world_map_is_shadowed   (world_map *world, vec4 point);
 color3     world_map_shade_hit     (world_map *world, intersect_ex i_ex);
 color3     world_map_color_at      (world_map *world, ray r);
 

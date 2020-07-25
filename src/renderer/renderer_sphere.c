@@ -21,8 +21,8 @@ intersect *sphere_intersect(sphere *s, ray *r) {
     if (discriminant >= 0.0f) {
         f32 dis_sqrt = sqrtf(discriminant);
         f32 values[] = {
-            (-b - dis_sqrt) / (2 * a),
-            (-b + dis_sqrt) / (2 * a),
+            (-b - dis_sqrt) / (2.0f * a),
+            (-b + dis_sqrt) / (2.0f * a),
         };
 
         list = intersect_list_append(list, (intersect) {.s = s, .value = values[0]});

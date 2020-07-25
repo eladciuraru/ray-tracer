@@ -8,7 +8,7 @@ light_point light_point_new(vec4 position, color3 intensity) {
 
 
 color3 light_point_color(light_point light, material m, vec4 point,
-                         vec4 view, vec4 normal) {
+                         vec4 view, vec4 normal, bool in_shadow) {
     _ASSERT(vec4_is_point(point));
     _ASSERT(vec4_is_vector(view));
     _ASSERT(vec4_is_vector(normal));
@@ -26,7 +26,7 @@ color3 light_point_color(light_point light, material m, vec4 point,
     // Calculate ambient
     ambient = color3_scalar_mul(effective_color, m.ambient);
 
-    if (light_dot_normal >= 0.0f) {
+    if (!in_shadow && light_dot_normal >= 0.0f) {
         // Calculate diffuse
         diffuse = color3_scalar_mul(effective_color, m.diffuse * light_dot_normal);
 

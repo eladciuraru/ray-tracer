@@ -5,7 +5,6 @@ void test_world_intersect(void) {
                                vec4_make_vector(0.0f, 0.0f, 1.0f));
 
     intersect *xs_list = world_map_intersect(world, r);
-
     assert(intersect_list_len(xs_list)         == 4);
     assert(f32_compare(xs_list[0].value, 4.0f) == true);
     assert(f32_compare(xs_list[1].value, 4.5f) == true);
@@ -17,32 +16,56 @@ void test_world_intersect(void) {
 
 
 void test_world_shade_hit_outside(void) {
-    world_map  *world = world_map_create_default();
-    ray         r     = ray_new(vec4_make_point (0.0f, 0.0f, -5.0f),
-                                vec4_make_vector(0.0f, 0.0f,  1.0f));
-   intersect    i     = intersect_new(&world->s_list[0], 4.0f);
-   intersect_ex i_ex  = intersect_ex_compute(i, r);
+    world_map   *world = world_map_create_default();
+    ray          r     = ray_new(vec4_make_point (0.0f, 0.0f, -5.0f),
+                                 vec4_make_vector(0.0f, 0.0f,  1.0f));
+    intersect    i     = intersect_new(&world->s_list[0], 4.0f);
+    intersect_ex i_ex  = intersect_ex_compute(i, r);
 
-   color3 res = world_map_shade_hit(world, i_ex);
-   assert(color3_compare(res, color3_new(0.38066f, 0.47583f, 0.2855f)));
+    color3 res = world_map_shade_hit(world, i_ex);
+    assert(color3_compare(res, color3_new(0.38066f, 0.47583f, 0.2855f)));
 
-   world = world_map_destroy(world);
+    world = world_map_destroy(world);
 }
 
 
 void test_world_shade_hit_inside(void) {
-    world_map  *world = world_map_create_default();
-    world->light      = light_point_new(vec4_make_point(0.0f, 0.25f, 0.0f),
-                                        COLOR3_WHITE);
-    ray         r     = ray_new(vec4_make_point (0.0f, 0.0f, 0.0f),
+    world_map    *world = world_map_create_default();
+    world->light        = light_point_new(vec4_make_point(0.0f, 0.25f, 0.0f),
+                                          COLOR3_MAX_INTENSITY);
+    ray           r     = ray_new(vec4_make_point (0.0f, 0.0f, 0.0f),
+                                  vec4_make_vector(0.0f, 0.0f, 1.0f));
+
+    intersect     i     = intersect_new(&world->s_list[1], 0.5f);
+    intersect_ex  i_ex  = intersect_ex_compute(i, r);
+
+    color3 res = world_map_shade_hit(world, i_ex);
+    assert(color3_compare(res, color3_new(0.90498f, 0.90498f, 0.90498f)));
+
+    world = world_map_destroy(world);
+}
+
+
+void test_world_shade_hit_shadow(void) {
+    world_map    *world = world_map_create();
+    world->light        = light_point_new(vec4_make_point(0.0f, 0.0f, -10.0f),
+                                          COLOR3_MAX_INTENSITY);
+
+    sphere s2    = sphere_new();
+    s2.transform = mat4_translate(mat4_new_transform(), 0.0f, 0.0f, 10.0f);
+
+    world->s_list = sphere_list_append(world->s_list, sphere_new());
+    world->s_list = sphere_list_append(world->s_list, s2);
+
+    ray          r    = ray_new(vec4_make_point (0.0f, 0.0f, 5.0f),
                                 vec4_make_vector(0.0f, 0.0f, 1.0f));
-   intersect    i     = intersect_new(&world->s_list[1], 0.5f);
-   intersect_ex i_ex  = intersect_ex_compute(i, r);
+    intersect    i    = intersect_new(&world->s_list[1], 4.0f);
+    intersect_ex i_ex = intersect_ex_compute(i, r);
 
-   color3 res = world_map_shade_hit(world, i_ex);
-   assert(color3_compare(res, color3_new(0.90498f, 0.90498f, 0.90498f)));
+    color3 res = world_map_shade_hit(world, i_ex);
+    assert(color3_compare(res, color3_new(0.1f, 0.1f, 0.1f)));
 
-   world = world_map_destroy(world);
+    world = world_map_destroy(world);
 }
 
 
@@ -83,13 +106,36 @@ void test_world_color_at(void) {
 }
 
 
+void test_world_is_shadowed(void) {
+    world_map *world = world_map_create_default();
+    struct { vec4 point; bool in_shadow; } tests[] = {
+        { vec4_make_point(  0.0f,  10.0f,   0.0f), false },
+        { vec4_make_point( 10.0f, -10.0f,  10.0f), true },
+        { vec4_make_point(-20.0f,  20.0f, -20.0f), false },
+        { vec4_make_point( -2.0f,   2.0f,  -2.0f), false },
+    };
+
+    for (usize i = 0; i < _countof(tests); i++) {
+        vec4 p = tests[i].point;
+        bool f = tests[i].in_shadow;
+
+        bool res = world_map_is_shadowed(world, p);
+        assert(res == f);
+    }
+
+    world_map_destroy(world);
+}
+
+
 void test_suite_world(void) {
     printf("Running tests for renderer_world.c\n");
 
     test_world_intersect();
     test_world_shade_hit_outside();
     test_world_shade_hit_inside();
+    test_world_shade_hit_shadow();
     test_world_color_at();
+    test_world_is_shadowed();
 
     printf("Succesfully ran all tests\n");
 }

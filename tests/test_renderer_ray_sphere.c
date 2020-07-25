@@ -266,6 +266,18 @@ void test_intersection_ex_compute_inside(void) {
 }
 
 
+void test_intersection_ex_compute_over_point(void) {
+    ray       r = ray_new(vec4_make_point (0.0f, 0.0f, -5.0f),
+                          vec4_make_vector(0.0f, 0.0f,  1.0f));
+    sphere    s = sphere_new();
+    s.transform = mat4_translate(mat4_new_transform(), 0.0f, 0.0f, 1.0f);
+    intersect i = intersect_new(&s, 5.0f);
+
+    intersect_ex res = intersect_ex_compute(i, r);
+    assert(res.over_point.z < -_F32_EPSILON / 2.0f);
+    assert(res.point.z > res.over_point.z);
+}
+
 void test_suite_ray_sphere(void) {
     printf("Running tests for renderer_ray.c\n");
 
