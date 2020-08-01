@@ -7,16 +7,16 @@ world_map *world_map_create(void) {
 world_map *world_map_create_default(void) {
     world_map *world = _allocate_buffer(sizeof(*world));
 
-    world->light = light_point_new(vec4_make_point(-10.0f, 10.0f, -10.0f),
+    world->light = light_point_new(vec4_make_point(-10.0, 10.0, -10.0),
                                   COLOR3_MAX_INTENSITY);
 
     sphere s1            = sphere_new();
-    s1.material.color    = color3_new(0.8f, 1.0f, 0.6f);
-    s1.material.diffuse  = 0.7f;
-    s1.material.specular = 0.2f;
+    s1.material.color    = color3_new(0.8, 1.0, 0.6);
+    s1.material.diffuse  = 0.7;
+    s1.material.specular = 0.2;
 
     sphere s2    = sphere_new();
-    s2.transform = mat4_scale(s2.transform, 0.5f, 0.5f, 0.5f);
+    s2.transform = mat4_scale(s2.transform, 0.5, 0.5, 0.5);
 
     world->s_list = sphere_list_append(NULL, s1);
     world->s_list = sphere_list_append(world->s_list, s2);
@@ -36,7 +36,7 @@ intersect *world_map_intersect(world_map *world, ray r) {
     intersect *xs_list = NULL;
 
     for (u32 i = 0; i < sphere_list_len(world->s_list); i++) {
-        intersect *temp = sphere_intersect(&world->s_list[i], &r);
+        intersect *temp = sphere_intersect(&world->s_list[i], r);
 
         xs_list = intersect_list_extend(xs_list, temp);
 
@@ -51,7 +51,7 @@ intersect *world_map_intersect(world_map *world, ray r) {
 bool world_map_is_shadowed(world_map *world, vec4 point) {
     vec4 vec       = vec4_sub(world->light.position, point);
     vec4 direction = vec4_normalize(vec);
-    f32  distance  = vec4_magnitude(vec);
+    f64  distance  = vec4_magnitude(vec);
 
     ray        shadow_ray = ray_new(point, direction);
     intersect *xs_list    = world_map_intersect(world, shadow_ray);

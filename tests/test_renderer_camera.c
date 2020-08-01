@@ -1,24 +1,24 @@
 
 void test_camera_pixel_size(void) {
-    camera cam = camera_new(200, 125, (f32) M_PI_2);
-    assert(f32_compare(cam.pixel_size, 0.01f) == true);
+    camera cam = camera_new(200, 125, M_PI_2);
+    assert(f64_compare(cam.pixel_size, 0.01) == true);
 
-    cam = camera_new(125, 200, (f32) M_PI_2);
-    assert(f32_compare(cam.pixel_size, 0.01f) == true);
+    cam = camera_new(125, 200, M_PI_2);
+    assert(f64_compare(cam.pixel_size, 0.01) == true);
 }
 
 
 void test_camera_ray_for_pixel(void) {
-    camera cam  = camera_new(201, 101, (f32) M_PI_2);
+    camera cam  = camera_new(201, 101, M_PI_2);
     struct { ray r; u32 x, y; } tests[] = {
         {
-            ray_new(vec4_make_point (0.0f, 0.0f,  0.0f),
-                    vec4_make_vector(0.0f, 0.0f, -1.0f)),
+            ray_new(vec4_make_point (0.0, 0.0,  0.0),
+                    vec4_make_vector(0.0, 0.0, -1.0)),
             100, 50,
         },
         {
-            ray_new(vec4_make_point (0.00000f, 0.00000f,  0.00000f),
-                    vec4_make_vector(0.66519f, 0.33259f, -0.66851f)),
+            ray_new(vec4_make_point (0.00000, 0.00000,  0.00000),
+                    vec4_make_vector(0.66519, 0.33259, -0.66851)),
             0, 0,
         },
     };
@@ -34,13 +34,13 @@ void test_camera_ray_for_pixel(void) {
     }
 
     // Special case
-    cam.transform = mat4_translate(cam.transform, 0.0f, -2.0f, 5.0f);
-    cam.transform = mat4_rotate_y(cam.transform, (f32) M_PI_4);
+    cam.transform = mat4_translate(cam.transform, 0.0, -2.0, 5.0);
+    cam.transform = mat4_rotate_y(cam.transform, M_PI_4);
 
-    f32 sqrt_2_2 = sqrtf(2.0f) / 2.0f;
+    f64 sqrt_2_2 = f64_sqrt(2.0) / 2.0;
     ray res      = camera_ray_for_pixel(cam, 100, 50);
-    assert(vec4_compare(res.origin,    vec4_make_point (0.0f,     2.0f, -5.0f))     == true);
-    assert(vec4_compare(res.direction, vec4_make_vector(sqrt_2_2, 0.0f, -sqrt_2_2)) == true);
+    assert(vec4_compare(res.origin,    vec4_make_point (0.0,      2.0, -5.0))      == true);
+    assert(vec4_compare(res.direction, vec4_make_vector(sqrt_2_2, 0.0, -sqrt_2_2)) == true);
 }
 
 

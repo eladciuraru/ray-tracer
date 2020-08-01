@@ -1,33 +1,33 @@
 
-#define _VEC4_TYPE_POINT    1.0f
-#define _VEC4_TYPE_VECTOR   0.0f
+#define _VEC4_TYPE_POINT    1.0
+#define _VEC4_TYPE_VECTOR   0.0
 
 
-vec4 vec4_make_point(f32 x, f32 y, f32 z) {
+vec4 vec4_make_point(f64 x, f64 y, f64 z) {
     return (vec4) { x, y, z, _VEC4_TYPE_POINT };
 }
 
 
-vec4 vec4_make_vector(f32 x, f32 y, f32 z) {
+vec4 vec4_make_vector(f64 x, f64 y, f64 z) {
     return (vec4) { x, y, z, _VEC4_TYPE_VECTOR };
 }
 
 
 bool vec4_is_point(vec4 v) {
-    return v.w == _VEC4_TYPE_POINT;
+    return f64_compare(v.w, _VEC4_TYPE_POINT);
 }
 
 
 bool vec4_is_vector(vec4 v) {
-    return v.w == _VEC4_TYPE_VECTOR;
+    return f64_compare(v.w, _VEC4_TYPE_VECTOR);
 }
 
 
 bool vec4_compare(vec4 v1, vec4 v2) {
-    return f32_compare(v1.x, v2.x) &&
-           f32_compare(v1.y, v2.y) &&
-           f32_compare(v1.z, v2.z) &&
-           f32_compare(v1.w, v2.w);
+    return f64_compare(v1.x, v2.x) &&
+           f64_compare(v1.y, v2.y) &&
+           f64_compare(v1.z, v2.z) &&
+           f64_compare(v1.w, v2.w);
 }
 
 
@@ -61,7 +61,7 @@ vec4 vec4_negate(vec4 v) {
 }
 
 
-vec4 vec4_scalar_mul(vec4 v, f32 scalar) {
+vec4 vec4_scalar_mul(vec4 v, f64 scalar) {
     return (vec4) {
         v.x * scalar,
         v.y * scalar,
@@ -71,7 +71,7 @@ vec4 vec4_scalar_mul(vec4 v, f32 scalar) {
 }
 
 
-vec4 vec4_scalar_div(vec4 v, f32 scalar) {
+vec4 vec4_scalar_div(vec4 v, f64 scalar) {
     return (vec4) {
         v.x / scalar,
         v.y / scalar,
@@ -81,18 +81,16 @@ vec4 vec4_scalar_div(vec4 v, f32 scalar) {
 }
 
 
-// TODO: Replace this to not relay on the CRT
-#include <math.h>
-f32 vec4_magnitude(vec4 v) {
-    return (f32) sqrt(v.x * v.x +
-                      v.y * v.y +
-                      v.z * v.z +
-                      v.w * v.w);
+f64 vec4_magnitude(vec4 v) {
+    return f64_sqrt(v.x * v.x +
+                    v.y * v.y +
+                    v.z * v.z +
+                    v.w * v.w);
 }
 
 
 vec4 vec4_normalize(vec4 v) {
-    const f32 magni = vec4_magnitude(v);
+    const f64 magni = vec4_magnitude(v);
 
     return (vec4) {
         v.x / magni,
@@ -103,7 +101,7 @@ vec4 vec4_normalize(vec4 v) {
 }
 
 
-f32 vec4_dot_product(vec4 v1, vec4 v2) {
+f64 vec4_dot_product(vec4 v1, vec4 v2) {
     return v1.x * v2.x +
            v1.y * v2.y +
            v1.z * v2.z +
@@ -114,8 +112,8 @@ f32 vec4_dot_product(vec4 v1, vec4 v2) {
 vec4 vec4_cross_product(vec4 v1, vec4 v2) {
     // This implementation works only for when W=0, which means vector
     // for simplicity
-    _ASSERT(vec4_is_vector(v1) == true);
-    _ASSERT(vec4_is_vector(v2) == true);
+    _ASSERT(vec4_is_vector(v1));
+    _ASSERT(vec4_is_vector(v2));
 
     return (vec4) {
         v1.y * v2.z - v1.z * v2.y,

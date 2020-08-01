@@ -11,10 +11,10 @@ static void answer_chapter3(void) {
 
     // Question 2
     mat4 mat = {
-        8.0f,  2.0f, 2.0f, 2.0f,
-        3.0f, -1.0f, 7.0f, 0.0f,
-        7.0f,  0.0f, 5.0f, 4.0f,
-        6.0f, -2.0f, 0.0f, 5.0f,
+        8.0,  2.0, 2.0, 2.0,
+        3.0, -1.0, 7.0, 0.0,
+        7.0,  0.0, 5.0, 4.0,
+        6.0, -2.0, 0.0, 5.0,
     };
     mat4 res = mat4_mul(mat, mat4_inverse(mat));
 
@@ -39,8 +39,8 @@ static void answer_chapter3(void) {
 
     // Question 4
     mat4 iden = mat4_identity();
-    iden.m[1][1] = 23.0f;
-    vec4 res_vec = mat4_mul_vec4(iden, (vec4) { 1.0f, 2.0f, 3.0f, 4.0f });
+    iden.m[1][1] = 23.0;
+    vec4 res_vec = mat4_mul_vec4(iden, (vec4) { 1.0, 2.0, 3.0, 4.0 });
 
     printf("Q4: Try changing any single element of the identity matrix "
            "to a different number and multiply it by a tuple, what happens?\n");

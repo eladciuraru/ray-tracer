@@ -1,85 +1,87 @@
 
 void test_lighting_1(void) {
-    vec4        pos = vec4_make_point(0.0f, 0.0f, 0.0f);
+    vec4        pos = vec4_make_point(0.0, 0.0, 0.0);
     material    m   = material_default();
-    vec4        v   = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    vec4        n   = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    light_point l   = light_point_new(vec4_make_point(0.0f, 0.0f, -10.0f),
+    vec4        v   = vec4_make_vector(0.0, 0.0, -1.0);
+    vec4        n   = vec4_make_vector(0.0, 0.0, -1.0);
+    light_point l   = light_point_new(vec4_make_point(0.0, 0.0, -10.0),
                                       COLOR3_MAX_INTENSITY);
 
-    color3 lighting = color3_new(1.9f, 1.9f, 1.9f);
+    color3 lighting = color3_new(1.9, 1.9, 1.9);
     color3 res      = light_point_color(l, m, pos, v, n, false);
     assert(color3_compare(res, lighting));
 }
 
 
 void test_lighting_2(void) {
-    f32      sqrt2_2 = sqrtf(2.0f) / 2.0f;
-    vec4     pos     = vec4_make_point(0.0f, 0.0f, 0.0f);
-    material m       = material_default();
-    vec4     v       = vec4_make_vector(0.0f, sqrt2_2, -sqrt2_2);
-    vec4     n       = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    light_point l    = light_point_new(vec4_make_point(0.0f, 0.0f, -10.0f),
-                                       COLOR3_MAX_INTENSITY);
+    const f64 sqrt2_2 = f64_sqrt(2.0) / 2.0;
 
-    color3 lighting = color3_new(1.0f, 1.0f, 1.0f);
+    vec4        pos = vec4_make_point(0.0, 0.0, 0.0);
+    material    m   = material_default();
+    vec4        v   = vec4_make_vector(0.0, sqrt2_2, -sqrt2_2);
+    vec4        n   = vec4_make_vector(0.0, 0.0, -1.0);
+    light_point l   = light_point_new(vec4_make_point(0.0, 0.0, -10.0),
+                                      COLOR3_MAX_INTENSITY);
+
+    color3 lighting = color3_new(1.0, 1.0, 1.0);
     color3 res      = light_point_color(l, m, pos, v, n, false);
     assert(color3_compare(res, lighting));
 }
 
 
 void test_lighting_3(void) {
-    vec4     pos  = vec4_make_point(0.0f, 0.0f, 0.0f);
-    material m    = material_default();
-    vec4     v    = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    vec4     n    = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    light_point l = light_point_new(vec4_make_point(0.0f, 10.0f, -10.0f),
-                                    COLOR3_MAX_INTENSITY);
+    vec4        pos = vec4_make_point(0.0, 0.0, 0.0);
+    material    m   = material_default();
+    vec4        v   = vec4_make_vector(0.0, 0.0, -1.0);
+    vec4        n   = vec4_make_vector(0.0, 0.0, -1.0);
+    light_point l   = light_point_new(vec4_make_point(0.0, 10.0, -10.0),
+                                      COLOR3_MAX_INTENSITY);
 
-    color3 lighting = color3_new(0.7364f, 0.7364f, 0.7364f);
+    color3 lighting = color3_new(0.7364, 0.7364, 0.7364);
     color3 res      = light_point_color(l, m, pos, v, n, false);
     assert(color3_compare(res, lighting));
 }
 
 
 void test_lighting_4(void) {
-    f32      sqrt2_2 = sqrtf(2.0f) / 2.0f;
-    vec4     pos     = vec4_make_point(0.0f, 0.0f, 0.0f);
-    material m       = material_default();
-    vec4     v       = vec4_make_vector(0.0f, -sqrt2_2, -sqrt2_2);
-    vec4     n       = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    light_point l    = light_point_new(vec4_make_point(0.0f, 10.0f, -10.0f),
-                                       COLOR3_MAX_INTENSITY);
+    const f64 sqrt2_2 = f64_sqrt(2.0) / 2.0;
 
-    color3 lighting = color3_new(1.63638f, 1.63638f, 1.63638f);
+    vec4        pos = vec4_make_point(0.0, 0.0, 0.0);
+    material    m   = material_default();
+    vec4        v   = vec4_make_vector(0.0, -sqrt2_2, -sqrt2_2);
+    vec4        n   = vec4_make_vector(0.0, 0.0, -1.0);
+    light_point l   = light_point_new(vec4_make_point(0.0, 10.0, -10.0),
+                                      COLOR3_MAX_INTENSITY);
+
+    color3 lighting = color3_new(1.63638, 1.63638, 1.63638);
     color3 res      = light_point_color(l, m, pos, v, n, false);
     assert(color3_compare(res, lighting));
 }
 
 
 void test_lighting_5(void) {
-    vec4     pos  = vec4_make_point(0.0f, 0.0f, 0.0f);
-    material m    = material_default();
-    vec4     v    = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    vec4     n    = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    light_point l = light_point_new(vec4_make_point(0.0f, 0.0f, 10.0f),
-                                    COLOR3_MAX_INTENSITY);
+    vec4        pos = vec4_make_point(0.0, 0.0, 0.0);
+    material    m   = material_default();
+    vec4        v   = vec4_make_vector(0.0, 0.0, -1.0);
+    vec4        n   = vec4_make_vector(0.0, 0.0, -1.0);
+    light_point l   = light_point_new(vec4_make_point(0.0, 0.0, 10.0),
+                                      COLOR3_MAX_INTENSITY);
 
-    color3 lighting = color3_new(0.1f, 0.1f, 0.1f);
+    color3 lighting = color3_new(0.1, 0.1, 0.1);
     color3 res      = light_point_color(l, m, pos, v, n, false);
     assert(color3_compare(res, lighting));
 }
 
 
 void test_shadow(void) {
-    vec4     pos  = vec4_make_point(0.0f, 0.0f, 0.0f);
-    material m    = material_default();
-    vec4     v    = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    vec4     n    = vec4_make_vector(0.0f, 0.0f, -1.0f);
-    light_point l = light_point_new(vec4_make_point(0.0f, 0.0f, -10.0f),
-                                    COLOR3_MAX_INTENSITY);
+    vec4        pos = vec4_make_point(0.0, 0.0, 0.0);
+    material    m   = material_default();
+    vec4        v   = vec4_make_vector(0.0, 0.0, -1.0);
+    vec4        n   = vec4_make_vector(0.0, 0.0, -1.0);
+    light_point l   = light_point_new(vec4_make_point(0.0, 0.0, -10.0),
+                                      COLOR3_MAX_INTENSITY);
 
-    color3 lighting = color3_new(0.1f, 0.1f, 0.1f);
+    color3 lighting = color3_new(0.1, 0.1, 0.1);
     color3 res      = light_point_color(l, m, pos, v, n, false);
     assert(color3_compare(res, lighting));
 }

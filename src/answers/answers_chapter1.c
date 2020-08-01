@@ -21,19 +21,19 @@ static projectile tick(environment *env, projectile *proj) {
 
 static void answer_chapter1(void) {
     projectile proj = {
-        .position = vec4_make_point(0.0f, 1.0f, 0.0f),
-        .velocity = vec4_make_vector(1.0f, 1.0f, 0.0f),
+        .position = vec4_make_point (0.0, 1.0, 0.0),
+        .velocity = vec4_make_vector(1.0, 1.0, 0.0),
     };
     proj.velocity = vec4_normalize(proj.velocity);
-    proj.velocity = vec4_scalar_mul(proj.velocity, 21.25f);
+    proj.velocity = vec4_scalar_mul(proj.velocity, 21.25);
 
     environment env = {
-        .gravity = vec4_make_vector(0.0f, -0.5f, 0.0f),
-        .wind    = vec4_make_vector(-0.01f, 0.0f, 0.0f),
+        .gravity = vec4_make_vector( 0.0, -0.5, 0.0),
+        .wind    = vec4_make_vector(-0.01, 0.0, 0.0),
     };
 
     usize i = 0;
-    for (; proj.position.y > 0.0f; i++) {
+    for (; proj.position.y > 0.0; i++) {
         vec4 pos = proj.position;
         printf("Position - Point(%.3f, %.3f, %.3f)\n", pos.x, pos.y, pos.z);
 

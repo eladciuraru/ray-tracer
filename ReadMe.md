@@ -8,6 +8,7 @@ so this project will probably be revisted and rewritten at a later stage.
 
 # Images
 ![Sphere with light](answers_output/chapter6/sphere_light_small.bmp "Chapter 6")
+![Scene with shadow](answers_output/chapter8/shadow.bmp "Chapter 8")
 
 
 # Build

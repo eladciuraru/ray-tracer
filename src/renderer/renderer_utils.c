@@ -52,20 +52,3 @@ static void *_deallocate(void *addr) {
 
     return NULL;
 }
-
-
-bool f32_compare(f32 num, f32 other) {
-    return (num > other) ?
-           ((num - other) < _F32_EPSILON) :
-           ((other - num) < _F32_EPSILON);
-}
-
-
-static inline f32 f32_clamp(f32 value, f32 min, f32 max) {
-    return max(min(max, value), min);
-}
-
-
-static inline f32 f32_clamp_01(f32 value) {
-    return f32_clamp(value, 0.0f, 1.0f);
-}

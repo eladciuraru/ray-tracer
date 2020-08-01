@@ -25,33 +25,56 @@ typedef double f64;
 typedef char *cstring;  // For null terminated strings
 typedef char *string;   // For non null terminated strings
 
-bool f32_compare(f32 num, f32 other);
 
-#define _F32_EPSILON    0.00001f
+// Math functions
+#define _F64_EPSILON    0.0001f
+#define _F64_MAX        DBL_MAX
+
+
+static inline bool f64_compare(f64 num, f64 other) {
+    return (num > other) ?
+           ((num - other) < _F64_EPSILON) :
+           ((other - num) < _F64_EPSILON);
+}
+
+static inline f64 f64_clamp(f64 value, f64 min, f64 max) {
+    return max(min(max, value), min);
+}
+
+static inline f64 f64_clamp_01(f64 value) {
+    return f64_clamp(value, 0.0, 1.0);
+}
+
+static inline f64 f64_pow     (f64 value, f64 exp) { return pow(value, exp); }
+static inline f64 f64_sqrt    (f64 value)          { return sqrt(value); }
+static inline f64 f64_round   (f64 value)          { return round(value); }
+static inline f64 f64_sin     (f64 value)          { return sin(value); }
+static inline f64 f64_cos     (f64 value)          { return cos(value); }
+static inline f64 f64_tan     (f64 value)          { return tan(value); }
 
 
 // Vector/Point type
-typedef struct _vec4 { f32 x, y, z, w; } vec4;
+typedef struct _vec4 { f64 x, y, z, w; } vec4;
 
-vec4 vec4_make_point   (f32 x, f32 y, f32 z);
-vec4 vec4_make_vector  (f32 x, f32 y, f32 z);
+vec4 vec4_make_point   (f64 x, f64 y, f64 z);
+vec4 vec4_make_vector  (f64 x, f64 y, f64 z);
 bool vec4_is_point     (vec4 v);
 bool vec4_is_vector    (vec4 v);
 bool vec4_compare      (vec4 v1, vec4 v2);
 vec4 vec4_add          (vec4 v1, vec4 v2);
 vec4 vec4_sub          (vec4 v1, vec4 v2);
 vec4 vec4_negate       (vec4 v);
-vec4 vec4_scalar_mul   (vec4 v, f32 scalar);
-vec4 vec4_scalar_div   (vec4 v, f32 scalar);
-f32  vec4_magnitude    (vec4 v);
+vec4 vec4_scalar_mul   (vec4 v, f64 scalar);
+vec4 vec4_scalar_div   (vec4 v, f64 scalar);
+f64  vec4_magnitude    (vec4 v);
 vec4 vec4_normalize    (vec4 v);
-f32  vec4_dot_product  (vec4 v1, vec4 v2);
+f64  vec4_dot_product  (vec4 v1, vec4 v2);
 vec4 vec4_cross_product(vec4 v1, vec4 v2);
 vec4 vec4_reflect      (vec4 v, vec4 normal);
 
 
 // Color type
-typedef struct _color3 { f32 r, g, b; } color3;
+typedef struct _color3 { f64 r, g, b; } color3;
 
 #define COLOR3_BLACK            color3_new(0.0f, 0.0f, 0.0f)
 #define COLOR3_RED              color3_new(1.0f, 0.0f, 0.0f)
@@ -63,11 +86,11 @@ typedef struct _color3 { f32 r, g, b; } color3;
 #define COLOR3_WHITE            color3_new(1.0f, 1.0f, 1.0f)
 #define COLOR3_MAX_INTENSITY    COLOR3_WHITE
 
-color3 color3_new       (f32 r, f32 g, f32 b);
+color3 color3_new       (f64 r, f64 g, f64 b);
 bool   color3_compare   (color3 c1, color3 c2);
 color3 color3_add       (color3 c1, color3 c2);
 color3 color3_sub       (color3 c1, color3 c2);
-color3 color3_scalar_mul(color3 c,  f32 scalar);
+color3 color3_scalar_mul(color3 c,  f64 scalar);
 color3 color3_mul       (color3 c1, color3 c2);
 u32    color3_as_u32    (color3 c);
 
@@ -127,15 +150,15 @@ bitmap *canvas_bitmap_destroy(bitmap *bmp);
 #define MAT2_SIZE       2
 
 typedef struct _mat4 {
-    f32 m[MAT4_SIZE][MAT4_SIZE];
+    f64 m[MAT4_SIZE][MAT4_SIZE];
 } mat4;
 
 typedef struct _mat3 {
-    f32 m[MAT3_SIZE][MAT3_SIZE];
+    f64 m[MAT3_SIZE][MAT3_SIZE];
 } mat3;
 
 typedef struct _mat2 {
-    f32 m[MAT2_SIZE][MAT2_SIZE];
+    f64 m[MAT2_SIZE][MAT2_SIZE];
 } mat2;
 
 mat4 mat4_identity     (void);
@@ -144,29 +167,29 @@ mat4 mat4_mul          (mat4 m1, mat4 m2);
 vec4 mat4_mul_vec4     (mat4 m,  vec4 v);
 mat4 mat4_transpose    (mat4 m);
 mat3 mat4_submatrix    (mat4 m, u32 row, u32 col);
-f32  mat4_minor        (mat4 m, u32 row, u32 col);
-f32  mat4_cofactor     (mat4 m, u32 row, u32 col);
-f32  mat4_determinant  (mat4 m);
+f64  mat4_minor        (mat4 m, u32 row, u32 col);
+f64  mat4_cofactor     (mat4 m, u32 row, u32 col);
+f64  mat4_determinant  (mat4 m);
 bool mat4_is_invertible(mat4 m);
 mat4 mat4_inverse      (mat4 m);
 bool mat3_compare      (mat3 m1, mat3 m2);
 mat2 mat3_submatrix    (mat3 m,  u32 row, u32 col);
-f32  mat3_minor        (mat3 m,  u32 row, u32 col);
-f32  mat3_cofactor     (mat3 m,  u32 row, u32 col);
-f32  mat3_determinant  (mat3 m);
+f64  mat3_minor        (mat3 m,  u32 row, u32 col);
+f64  mat3_cofactor     (mat3 m,  u32 row, u32 col);
+f64  mat3_determinant  (mat3 m);
 bool mat2_compare      (mat2 m1, mat2 m2);
-f32  mat2_determinant  (mat2 m);
+f64  mat2_determinant  (mat2 m);
 
 
 // Transformation operations
 #define mat4_new_transform      mat4_identity
 
-mat4 mat4_translate(mat4 m, f32 x, f32 y, f32 z);
-mat4 mat4_scale    (mat4 m, f32 x, f32 y, f32 z);
-mat4 mat4_rotate_x (mat4 m, f32 radians);
-mat4 mat4_rotate_y (mat4 m, f32 radians);
-mat4 mat4_rotate_z (mat4 m, f32 radians);
-mat4 mat4_shearing (mat4 m, f32 xy, f32 xz, f32 yx, f32 yz, f32 zx, f32 zy);
+mat4 mat4_translate(mat4 m, f64 x, f64 y, f64 z);
+mat4 mat4_scale    (mat4 m, f64 x, f64 y, f64 z);
+mat4 mat4_rotate_x (mat4 m, f64 radians);
+mat4 mat4_rotate_y (mat4 m, f64 radians);
+mat4 mat4_rotate_z (mat4 m, f64 radians);
+mat4 mat4_shearing (mat4 m, f64 xy, f64 xz, f64 yx, f64 yz, f64 zx, f64 zy);
 mat4 mat4_view     (vec4 from, vec4 to, vec4 up);
 
 
@@ -177,21 +200,21 @@ typedef struct _ray {
 } ray;
 
 ray  ray_new      (vec4 origin, vec4 direction);
-vec4 ray_position (ray *r, f32 time);
-ray  ray_transform(ray *r, mat4 transform);
+vec4 ray_position (ray r, f64 time);
+ray  ray_transform(ray r, mat4 transform);
 
 
 // Type Material
 typedef struct _material {
     color3 color;
-    f32    ambient;
-    f32    diffuse;
-    f32    specular;
-    f32    shininess;
+    f64    ambient;
+    f64    diffuse;
+    f64    specular;
+    f64    shininess;
 } material;
 
-material material_new    (color3 color, f32 ambient, f32 diffuse,
-                          f32 specular, f32 shininess);
+material material_new    (color3 color, f64 ambient, f64 diffuse,
+                          f64 specular, f64 shininess);
 material material_default(void);
 
 
@@ -207,7 +230,7 @@ typedef struct _intersect intersect;
 
 sphere     sphere_new         (void);
 vec4       sphere_normal_at   (sphere *s, vec4 point);
-intersect *sphere_intersect   (sphere *s, ray *r);
+intersect *sphere_intersect   (sphere *s, ray r);
 sphere    *sphere_list_create (u32 limit);
 void      *sphere_list_destroy(sphere *list);
 u32        sphere_list_len    (sphere *list);
@@ -219,13 +242,13 @@ sphere    *sphere_list_extend (sphere *list, sphere *other);
 // Intersect type
 typedef struct _intersect {
     sphere *s;
-    f32     value;
+    f64     value;
 } intersect;
 
 // ex for extended/extra
 typedef struct _intersect_ex {
     sphere *s;
-    f32     value;
+    f64     value;
     bool    inside;
     vec4    point;
     vec4    view;
@@ -235,7 +258,7 @@ typedef struct _intersect_ex {
 
 #define INTERSECT_NO_HIT    NULL
 
-intersect     intersect_new         (sphere *s, f32 value);
+intersect     intersect_new         (sphere *s, f64 value);
 bool          intersect_compare     (intersect i1, intersect i2);
 intersect_ex  intersect_ex_compute  (intersect i, ray r);
 bool          intersect_ex_compare  (intersect_ex i1, intersect_ex i2);
@@ -279,15 +302,15 @@ color3     world_map_color_at      (world_map *world, ray r);
 typedef struct _camera {
     u32  hsize;
     u32  vsize;
-    f32  field;
+    f64  field;
     mat4 transform;
 
     // calculated fields
-    f32 half_width;
-    f32 half_height;
-    f32 pixel_size;
+    f64 half_width;
+    f64 half_height;
+    f64 pixel_size;
 } camera;
 
-camera  camera_new          (u32 hsize, u32 vsize, f32 field);
+camera  camera_new          (u32 hsize, u32 vsize, f64 field);
 ray     camera_ray_for_pixel(camera cam, u32 x, u32 y);
 canvas *camera_render_world (camera cam, world_map *world);

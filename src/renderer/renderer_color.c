@@ -1,5 +1,5 @@
 
-color3 color3_new(f32 r, f32 g, f32 b) {
+color3 color3_new(f64 r, f64 g, f64 b) {
     return (color3) {
         .r = r,
         .g = g,
@@ -8,9 +8,9 @@ color3 color3_new(f32 r, f32 g, f32 b) {
 }
 
 bool color3_compare(color3 c1, color3 c2) {
-    return f32_compare(c1.r, c2.r) &&
-           f32_compare(c1.g, c2.g) &&
-           f32_compare(c1.b, c2.b);
+    return f64_compare(c1.r, c2.r) &&
+           f64_compare(c1.g, c2.g) &&
+           f64_compare(c1.b, c2.b);
 }
 
 
@@ -32,7 +32,7 @@ color3 color3_sub(color3 c1, color3 c2) {
 }
 
 
-color3 color3_scalar_mul(color3 c, f32 scalar) {
+color3 color3_scalar_mul(color3 c, f64 scalar) {
     return (color3) {
         c.r * scalar,
         c.g * scalar,
@@ -52,7 +52,7 @@ color3 color3_mul(color3 c1, color3 c2) {
 
 
 u32 color3_as_u32(color3 c) {
-    return (u8) (f32_clamp_01(c.b) * 255) |
-           (u8) (f32_clamp_01(c.g) * 255) << 8 |
-           (u8) (f32_clamp_01(c.r) * 255) << 16;
+    return (u8) (f64_clamp_01(c.b) * 255) |
+           (u8) (f64_clamp_01(c.g) * 255) << 8 |
+           (u8) (f64_clamp_01(c.r) * 255) << 16;
 }

@@ -1,5 +1,5 @@
 
-intersect intersect_new(sphere *s, f32 value) {
+intersect intersect_new(sphere *s, f64 value) {
     return (intersect) {
         .s     = s,
         .value = value,
@@ -12,17 +12,17 @@ intersect_ex intersect_ex_compute(intersect i, ray r) {
 
     i_ex.s      = i.s;
     i_ex.value  = i.value;
-    i_ex.point  = ray_position(&r, i.value);
+    i_ex.point  = ray_position(r, i.value);
     i_ex.view   = vec4_negate(r.direction);
     i_ex.normal = sphere_normal_at(i.s, i_ex.point);
 
-    if (vec4_dot_product(i_ex.normal, i_ex.view) < 0.0f) {
+    if (vec4_dot_product(i_ex.normal, i_ex.view) < 0.0) {
         i_ex.inside = true;
         i_ex.normal = vec4_negate(i_ex.normal);
     }
 
     i_ex.over_point = vec4_add(i_ex.point,
-                               vec4_scalar_mul(i_ex.normal, 0.001f));//_F32_EPSILON));
+                               vec4_scalar_mul(i_ex.normal, _F64_EPSILON));
 
     return i_ex;
 }
@@ -31,7 +31,7 @@ intersect_ex intersect_ex_compute(intersect i, ray r) {
 bool intersect_ex_compare(intersect_ex i1, intersect_ex i2) {
     return i1.s      == i2.s                  &&
            i1.inside == i2.inside             &&
-           f32_compare (i1.value,  i2.value)  &&
+           f64_compare (i1.value,  i2.value)  &&
            vec4_compare(i1.point,  i2.point)  &&
            vec4_compare(i1.view,   i2.view)   &&
            vec4_compare(i1.normal, i2.normal) &&
@@ -40,7 +40,7 @@ bool intersect_ex_compare(intersect_ex i1, intersect_ex i2) {
 
 
 bool intersect_compare(intersect i1, intersect i2) {
-    return i1.s == i2.s && f32_compare(i1.value, i2.value);
+    return i1.s == i2.s && f64_compare(i1.value, i2.value);
 }
 
 
@@ -98,12 +98,12 @@ void intersect_list_sort(intersect *list) {
 
 
 intersect *intersect_list_hit(intersect *list) {
-    f32        min   = FLT_MAX;
+    f64        min   = _F64_MAX;
     intersect *inter = INTERSECT_NO_HIT;
     for (u32 i = 0; i < intersect_list_len(list); i++) {
-        f32 value = list[i].value;
+        f64 value = list[i].value;
 
-        if (value >= 0.0f && value < min) {
+        if (value >= 0.0 && value < min) {
             inter = &list[i];
             min   = value;
         }
